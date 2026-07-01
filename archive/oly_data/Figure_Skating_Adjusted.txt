@@ -1,0 +1,254 @@
+Sport: "Figure Skating"
+Class: "Seniors"
+Team Members: "No"
+Is Olympic Discipline: "Yes"
+
+selection_paths:
+  any_of:
+
+    # --- Singles Women (>= 185) ---
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU World Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2025-07-31"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU Grand Prix Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU Challenger Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU Olympic Qualifier"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "ISU OWG Test Event"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Women"
+        Result: { ge: 185 }
+        Comp.SetDetail: "National Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+
+    # --- Singles Men (>= 210) ---
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU World Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2025-07-31"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU Grand Prix Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU Challenger Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU Olympic Qualifier"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "ISU OWG Test Event"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Singles"
+        Gender: "Men"
+        Result: { ge: 210 }
+        Comp.SetDetail: "National Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+
+    # --- Ice Dance Mixed (>= 165) ---
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU World Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2025-07-31"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU Grand Prix Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU Challenger Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU Olympic Qualifier"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "ISU OWG Test Event"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Ice Dance"
+        Gender: "Mixed"
+        Result: { ge: 165 }
+        Comp.SetDetail: "National Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+
+    # --- Pairs Mixed (>= 170) ---
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU World Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-01-01", "2025-07-31"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU European Figure Skating Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU Grand Prix Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU Challenger Senior"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU Olympic Qualifier"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "ISU OWG Test Event"
+        Date: { interval: ["2025-01-01", "2026-01-18"] }
+        count_at_least: 1
+    - condition:
+        Discipline: "Pairs"
+        Gender: "Mixed"
+        Result: { ge: 170 }
+        Comp.SetDetail: "National Championships"
+        Date: { interval: ["2025-08-01", "2026-01-18"] }
+        count_at_least: 1
+
+
+# QUALIFICATION LOGIC:
+# An athlete qualifies if they achieve the minimum score in ANY eligible competition
+# for their specific Discipline and Gender combination.
+#
+# COMPETITION IDENTIFICATION:
+# - World Championships 2025: Comp.SetDetail = "ISU World Figure Skating Championships" AND Date = 01.01.2025-18.01.2026
+# - European Championships 2025: Comp.SetDetail = "ISU European Figure Skating Championships" AND Date = 01.01.2025-31.07.2025
+# - European Championships 2026: Comp.SetDetail = "ISU European Figure Skating Championships" AND Date = 01.08.2025-18.01.2026
+# - Grand Prix Senior ISU 2025/2026: Comp.SetDetail = "ISU Grand Prix Senior" AND Date = 01.08.2025-18.01.2026
+# - Challenger Senior ISU 2025/2026: Comp.SetDetail = "ISU Challenger Senior" AND Date = 01.08.2025-18.01.2026
+# - International Competition for Olympic Qualification 2025: Comp.SetDetail = "ISU Olympic Qualifier" AND Date = 01.01.2025-18.01.2026
+# - OWG Test Event Road to Milano: Comp.SetDetail = "ISU OWG Test Event" AND Date = 01.01.2025-18.01.2026
+# - Swiss Championships 2026: Comp.SetDetail = "National Championships" AND Date = 01.08.2025-18.01.2026

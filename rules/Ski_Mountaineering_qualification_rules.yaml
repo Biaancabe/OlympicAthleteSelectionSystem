@@ -1,0 +1,34 @@
+Description: "Ski Mountaineering Qualification Rules for Olympic Games 2026"
+created at: 2025-12-18
+updated at: 2025-12-18
+version: 1.0
+
+# Route 1 valid for singles and relay. Route 2 only for singles. But there will only be singles results in the data for National Ranking. 
+
+rule_tree:
+  description: "Qualification Criteria for Ski Mountaineering at Olympic Games 2026"
+  sport: "Ski Mountaineering"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 1x Top-2 World Championships 2025
+    - description: "Top-2 WM 2025"
+      priority: 1
+      conditions:
+
+        - description: "Top-2 WM 2025"
+          competition: ["ISMF World Championships"]
+          date: ["2025-03-02", "2025-03-08"]
+          performance: [1, 2]
+          count_at_least: 1
+
+    # Route 2: 1x Top-4 National Ranking 2026
+    - description: "Top-4 National Ranking 2026"
+      priority: 1
+      conditions:
+
+        - description: "Top-4 National Ranking 2026"
+          competition: ["National Ranking"]
+          date: ["2026-01-01", "2026-01-15"]
+          performance: [1, 4]
+          count_at_least: 1

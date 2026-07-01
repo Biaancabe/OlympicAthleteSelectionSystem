@@ -1,0 +1,91 @@
+Sport: "Figure Skating"
+Is Olympic Discipline: "Yes"
+Team Members: "No"
+Class: "Seniors"
+
+# QUALIFICATION CRITERIA - SCORE-BASED SYSTEM (BY DISCIPLINE & GENDER)
+
+qualification_system: "score_based"
+
+score_thresholds:
+  Singles:
+    Women:
+      minimum_result: 185
+      description: "Result >= 185 points"
+    Men:
+      minimum_result: 210
+      description: "Result >= 210 points"
+      
+  "Ice Dance":
+    Mixed:
+      minimum_result: 165
+      description: "Result >= 165 points"
+      
+  Pairs:
+    Mixed:
+      minimum_result: 170
+      description: "Result >= 170 points"
+
+# ELIGIBLE COMPETITIONS - ALL COUNT TOWARDS QUALIFICATION
+eligible_competitions:
+  - competition:
+      name: "World Championships 2025"
+      Comp.SetDetail: "ISU World Figure Skating Championships"
+      Date:
+        interval: ["2025-01-01", "2026-01-18"]
+        
+  - competition:
+      name: "European Championships 2025"
+      Comp.SetDetail: "ISU European Figure Skating Championships"
+      Date:
+        interval: ["2025-01-01", "2025-07-31"]
+        
+  - competition:
+      name: "European Championships 2026"
+      Comp.SetDetail: "ISU European Figure Skating Championships"
+      Date:
+        interval: ["2025-08-01", "2026-01-18"]
+        
+  - competition:
+      name: "Grand Prix Senior ISU 2025/2026"
+      Comp.SetDetail: "ISU Grand Prix Senior"
+      Date:
+        interval: ["2025-08-01", "2026-01-18"]
+        
+  - competition:
+      name: "Challenger Senior ISU 2025/2026"
+      Comp.SetDetail: "ISU Challenger Senior"
+      Date:
+        interval: ["2025-08-01", "2026-01-18"]
+        
+  - competition:
+      name: "International Competition for Olympic Qualification 2025"
+      Comp.SetDetail: "ISU Olympic Qualifier"
+      Date:
+        interval: ["2025-01-01", "2026-01-18"]
+        
+  - competition:
+      name: "OWG Test Event Road to Milano"
+      Comp.SetDetail: "ISU OWG Test Event"
+      Date:
+        interval: ["2025-01-01", "2026-01-18"]
+        
+  - competition:
+      name: "Swiss Championships 2026"
+      Comp.SetDetail: "National Championships"
+      Date:
+        interval: ["2025-08-01", "2026-01-18"]
+
+# QUALIFICATION LOGIC:
+# An athlete qualifies if they achieve the minimum score in ANY eligible competition
+# for their specific Discipline and Gender combination.
+#
+# COMPETITION IDENTIFICATION:
+# - World Championships 2025: Comp.SetDetail = "ISU World Figure Skating Championships" AND Date = 01.01.2025-18.01.2026
+# - European Championships 2025: Comp.SetDetail = "ISU European Figure Skating Championships" AND Date = 01.01.2025-31.07.2025
+# - European Championships 2026: Comp.SetDetail = "ISU European Figure Skating Championships" AND Date = 01.08.2025-18.01.2026
+# - Grand Prix Senior ISU 2025/2026: Comp.SetDetail = "ISU Grand Prix Senior" AND Date = 01.08.2025-18.01.2026
+# - Challenger Senior ISU 2025/2026: Comp.SetDetail = "ISU Challenger Senior" AND Date = 01.08.2025-18.01.2026
+# - International Competition for Olympic Qualification 2025: Comp.SetDetail = "ISU Olympic Qualifier" AND Date = 01.01.2025-18.01.2026
+# - OWG Test Event Road to Milano: Comp.SetDetail = "ISU OWG Test Event" AND Date = 01.01.2025-18.01.2026
+# - Swiss Championships 2026: Comp.SetDetail = "National Championships" AND Date = 01.08.2025-18.01.2026

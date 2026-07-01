@@ -1,0 +1,12 @@
+"Date"
+"Year"
+"Comp.SetDetail"
+"Discipline"
+"Gender"
+"Class" // seniors / juniors / Under 23
+"Rank"
+"Team Members" // yes / no
+"Person"
+"DoB"
+"Result"
+"Is Olympic Discipline" // yes / (blank)

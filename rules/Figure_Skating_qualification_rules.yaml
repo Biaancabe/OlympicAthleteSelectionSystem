@@ -1,0 +1,50 @@
+Description: "Figure Skating Qualification Rules for Olympic Games 2026"
+created at: 2025-12-15
+updated at: 2025-12-22
+version: 1.1
+
+# Special structure. Minimum of points to reach. Can be done in many different competitons. 
+# Number of points is discipline specific. No Pairs or Ice Dance, because no Quota Places available for Switzerland.
+# Therefore, only two gender-specific disciplines. rule_tree structure adapted accordingly.
+# To Check: how to handle "any" competition in the code? and gender and performance as single value, not range. add a fictional maximum?
+
+rule_tree:
+  description: "Qualification Criteria for Figure Skating at Olympic Games 2026"
+  sport: "Figure Skating"
+  class: "Seniors"
+
+  criteria: 
+    # Route 1: Women Singles - Minimum of 185 points in any listed competition
+    - description: "Women Singles 185 points"
+      priority: 1
+      conditions:
+
+        - description: "Minimum 185 points"
+          competition: ["any"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance: [185]
+          count_at_least: 1
+        
+#       - description: "Only for Women"
+#          type: "gender"
+#          gender: "Women"
+
+    # Route 2: Men Singles - Minimum of 210 points in any listed competition
+    - description: "Men Singles 210 points"
+      priority: 1
+      conditions:
+
+        - description: "Minimum 210 points"
+          competition: ["any"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance: [210]
+          count_at_least: 1
+
+#        - description: "Only for Men"
+#          type: "gender" 
+#          gender: "Men"
+
+
+      
+
+

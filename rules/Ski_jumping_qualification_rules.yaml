@@ -1,0 +1,127 @@
+Description: "Ski Jumping Qualification Rules for Olympic Games 2026"
+created at: 2025-12-16
+updated at: 2025-12-16
+version: 1.0
+
+rule_tree:
+  description: "Qualification Criteria for Ski jumping at Olympic Games 2026"
+  sport: "Ski jumping"
+
+  criteria: 
+    # Route 1: 1x Top-10 World Championships 2025 AND 1x Top-25 World Cup 2025/2026 OR Sommer Grand Prix 2025
+    - description: "Top-10 WM 2025 + Top-25 WC 2025/26 or SG 2025"
+      priority: 1
+      conditions: 
+
+      - description: "Top-10 WM 2025"
+        competition: ["FIS Nordic World Ski Championships"]
+        date: ["2025-02-26", "2025-03-09"]  
+        performance: [1, 10]
+        count_at_least: 1
+
+      - description: "Top-25 WC 2025/26 or SG 2025"
+        competition: ["Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+        date: ["2025-07-15", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 1
+
+    # Route 2: 1x Top-15 World Cup 2024/25 OR Sommer Grand Prix 2024/25 AND 1x Top-25 World Cup 2025/2026
+    - description: "Top-15 WC 2024/25 or SG 2025 + Top-25 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "Top-15 WC 2024/25 or SG 2024"
+        competition: ["Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+        date: ["2024-11-15", "2025-10-27"]
+        performance: [1, 15]
+        count_at_least: 1
+
+      - description: "Top-25 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 1
+
+    # Route 3: 1x Top-15 World Cup 2025/2026
+    - description: "1x Top-15 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "1x Top-15 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 15]
+        count_at_least: 1
+
+    # Route 4: 2x Top-25 World Cup 2025/2026
+    - description: "2x Top-25 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "2x Top-25 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 2
+
+    # Route 5: 1x Top 15 Ski Flying World Championships 2026
+    - description: "1x Top-15 SF WM 2026"
+      priority: 1
+      conditions: 
+
+      - description: "1x Top-15 SF WM 2026"
+        competition: ["FIS Ski Flying World Championships"]
+        date:  ["2026-01-22", "2026-01-25"]
+        performance: [1, 15]
+        count_at_least: 1
+
+    # Route 6: 1x Top 25 Ski Flying World Championships 2026 AND 1x Top 25 World Cup 2025/2026
+    - description: "1x Top-25 SF WM 2026 + 1x Top-25 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "1x Top-25 SF WM 2026"
+        competition: ["FIS Ski Flying World Championships"]
+        date:  ["2026-01-22", "2026-01-25"]
+        performance: [1, 25]
+        count_at_least: 1
+
+      - description: "1x Top-25 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 1
+
+    # Route 7: 1x Top-3 Nordic Junior World Ski Championships 2025 AND 1x Top-25 World Cup 2025/2026
+    - description: "1x Top-3 U20 JWSC 2025 + 1x Top-25 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "1x Top-3 U20 JWSC 2025"
+        competition: ["FIS Nordic Junior World Ski Championships"]
+        date: ["2025-02-12", "2025-02-16"]
+        performance: [1, 3]
+        count_at_least: 1
+
+      - description: "1x Top-25 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 1
+
+    # Route 8: 1x Top-3 Continental Cup 2025/2026 AND 1x Top-25 World Cup 2025/2026
+    - description: "1x Top-3 CC 2025/26 + 1x Top-25 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "1x Top-3 CC 2025/26"
+        competition: ["FIS Ski Jumping Continental Cup"]
+        date: ["2025-07-15", "2026-01-18"]
+        performance: [1, 3]
+        count_at_least: 1
+
+      - description: "1x Top-25 WC 2025/26"
+        competition: ["Viesmann FIS Ski Jumping World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 25]
+        count_at_least: 1

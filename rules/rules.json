@@ -1,0 +1,12 @@
+{
+  "Biathlon": "Biathlon_qualification_rules.yaml",
+  "Bobsleigh": "Bobsleigh_qualification_rules.yaml",
+  "Figure Skating": "Figure_Skating_qualification_rules.yaml",
+  "Cross-Country Skiing": "Cross_Country_Skiing_qualification_rules.yaml",
+  "Ski Jumping": "Ski_jumping_qualification_rules.yaml",
+  "Skeleton": "Skeleton_qualification_rules.yaml",
+  "Alpine Skiing": "Alpine_Skiing_qualification_rules.yaml",
+  "Ski Mountaineering": "Ski_Mountaineering_qualification_rules.yaml",
+  "Freestyle Skiing": "Freestyle_Skiing_qualification_rules.yaml",
+  "Snowboard": "Snowboard_qualification_rules.yaml"
+}

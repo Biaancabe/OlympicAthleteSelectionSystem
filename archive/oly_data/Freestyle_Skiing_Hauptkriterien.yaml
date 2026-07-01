@@ -1,0 +1,158 @@
+Sport: "Freestyle Skiing"
+Is Olympic Discipline: "Yes"
+Team Members: "No"
+Class: "Seniors"
+
+# QUALIFICATION SYSTEM - TWO GROUPS (GROUP A HAS PRIORITY)
+
+qualification_groups:
+  Group_A:
+    priority: 1
+    description: "Priority group - qualifies first"
+    
+    # Same 3 routes for ALL disciplines
+    selection_paths:
+      any_of:
+        
+        # Route A1: 1x Top-3 World Championships 2025 AND 1x Top-8 World Cup 2025/26
+        - all_of:
+            - condition:
+                description: "Top-3 at World Championships 2025"
+                Comp.SetDetail: "FIS Freestyle World Ski Championships"
+                Year: 2025
+                Rank:
+                  interval: [1, 3]
+                count_at_least: 1
+                
+            - condition:
+                description: "Top-8 in World Cup 2025/26"
+                Comp.SetDetail: "FIS Freeski World Cup"
+                Date:
+                  interval: ["2025-07-01", "2026-01-25"]
+                Rank:
+                  interval: [1, 8]
+                count_at_least: 1
+        
+        # Route A2: 1x Top-3 World Cup Standings 2024/2025 AND 1x Top-8 World Cup 2025/26
+        - all_of:
+            - condition:
+                description: "Top-3 in World Cup Standings 2024/2025"
+                Comp.SetDetail: "FIS Freeski World Cup Standings"
+                Year: 2025
+                Rank:
+                  interval: [1, 3]
+                count_at_least: 1
+                
+            - condition:
+                description: "Top-8 in World Cup 2025/26"
+                Comp.SetDetail: "FIS Freeski World Cup"
+                Date:
+                  interval: ["2025-07-01", "2026-01-25"]
+                Rank:
+                  interval: [1, 8]
+                count_at_least: 1
+        
+        # Route A3: 2x Top-3 World Cup 2025/2026
+        - condition:
+            description: "2x Top-3 in World Cup 2025/2026"
+            Comp.SetDetail: "FIS Freeski World Cup"
+            Date:
+              interval: ["2025-07-01", "2026-01-25"]
+            Rank:
+              interval: [1, 3]
+            count_at_least: 2
+
+  Group_B:
+    priority: 2
+    description: "Secondary group - qualifies if places remain"
+    
+    # 3 routes: 1 common + 2 discipline-specific
+    selection_paths:
+      any_of:
+        
+        # Route B1: 1x Top-8 World Cup 2025/2026 (SAME FOR ALL DISCIPLINES)
+        - condition:
+            description: "Top-8 in World Cup 2025/2026"
+            Comp.SetDetail: "FIS Freeski World Cup"
+            Date:
+              interval: ["2025-07-01", "2026-01-25"]
+            Rank:
+              interval: [1, 8]
+            count_at_least: 1
+        
+        # Route B2: 2x Discipline-Specific Rank (varies by discipline and gender)
+        - discipline_specific_routes:
+            Aerials:
+              Women:
+                rank_threshold: 12
+                description: "2x Top-12 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 16
+                description: "2x Top-16 (one must be World Cup 2025/2026)"
+                
+            Moguls:
+              Women:
+                rank_threshold: 16
+                description: "2x Top-16 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 20
+                description: "2x Top-20 (one must be World Cup 2025/2026)"
+                
+            "Dual Moguls":
+              Women:
+                rank_threshold: 16
+                description: "2x Top-16 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 20
+                description: "2x Top-20 (one must be World Cup 2025/2026)"
+                
+            "Ski Cross":
+              Women:
+                rank_threshold: 12
+                description: "2x Top-12 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 20
+                description: "2x Top-20 (one must be World Cup 2025/2026)"
+                
+            "Big Air":
+              Women:
+                rank_threshold: 12
+                description: "2x Top-12 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 20
+                description: "2x Top-20 (one must be World Cup 2025/2026)"
+                
+            Slopestyle:
+              Women:
+                rank_threshold: 12
+                description: "2x Top-12 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 20
+                description: "2x Top-20 (one must be World Cup 2025/2026)"
+                
+            Halfpipe:
+              Women:
+                rank_threshold: 12
+                description: "2x Top-12 (one must be World Cup 2025/2026)"
+              Men:
+                rank_threshold: 16
+                description: "2x Top-16 (one must be World Cup 2025/2026)"
+
+# DISCIPLINE-SPECIFIC ROUTE B2 LOGIC:
+# One result MUST be from World Cup 2025/2026
+# The other can be from:
+# - World Championships 2025
+# - World Cup 2024/2025
+# - Another World Cup 2025/2026 result
+
+eligible_competitions_for_route_b2:
+  - World Cup 2025/2026 (REQUIRED - at least 1)
+  - World Championships 2025
+  - World Cup 2024/2025
+  - Additional World Cup 2025/2026
+
+# COMPETITION IDENTIFICATION:
+# - World Cup Events 2024/25: Comp.SetDetail = "FIS Freeski World Cup" AND Date = 01.07.2024-31.06.2025
+# - World Cup Events 2025/26: Comp.SetDetail = "FIS Freeski World Cup" AND Date = 01.07.2025-25.01.2026
+# - World Cup Standings 2024/25: Comp.SetDetail = "FIS Freeski World Cup Standings" AND Year = 2025
+# - World Championships 2025: Comp.SetDetail = "FIS Freestyle World Ski Championships" AND Year = 2025

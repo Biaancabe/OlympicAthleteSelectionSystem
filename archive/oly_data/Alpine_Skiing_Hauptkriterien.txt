@@ -1,0 +1,32 @@
+Sport: "Alpine Skiing"
+Class: "Seniors"
+Team Members: "No"
+Is Olympic Discipline: "Yes"
+
+# QUALIFICATION CRITERIA - 2 ROUTES (ANY ONE QUALIFIES)
+
+selection_paths:
+  any_of:
+	
+	# Route 1: 1x Top-7 World Cup 2025/2026
+    - condition:
+        description: "Top-7 in World Cup 2025/2026"
+        Comp.SetDetail: "Audi FIS Ski World Cup"
+        Date:
+          interval: ["2025-10-01", "2026-01-25"]
+        Rank:
+          interval: [1, 7]
+        count_at_least: 1
+    
+    # Route 2: 2x Top-15 World Cup 2025/2026
+    - condition:
+        description: "2x Top-15 in World Cup 2025/2026"
+        Comp.SetDetail: "Audi FIS Ski World Cup"
+        Date:
+          interval: ["2025-10-01", "2026-01-25"]
+        Rank:
+          interval: [1, 15]
+        count_at_least: 2
+
+# COMPETITION IDENTIFICATION:
+# - World Cup 2025/2026: Comp.SetDetail = "Audi FIS Ski World Cup" AND Date = 01.10.2025-25.01.2026

@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SelectionRules",
+  "description": "Schema for selection rules for Swiss Olympic",
+  "type": "object",
+  "required": [
+    "Description",
+    "created at",
+    "updated at",
+    "version",
+    "rule_tree"
+  ],
+  "properties": {
+    "Description": {
+      "type": "string"
+    },
+    "created at": {
+      "type": "string",
+      "format": "date"
+    },
+    "updated at": {
+      "type": "string",
+      "format": "date"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "rule_tree": {
+      "type": "object",
+      "required": [
+        "description",
+        "sport",
+        "criteria"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "sport": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "enum": ["Seniors", "Juniors", "Under 23", null]
+        },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "description",
+              "priority",
+              "conditions"
+            ],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "discipline": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "gender": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "priority": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "conditions": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "description",
+                    "competition",
+                    "date",
+                    "performance",
+                    "count_at_least"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "competition": {
+                      "type": "array",
+                      "items": {
+                      "type": "string"
+                      }
+                    },
+                    "date": {
+                      "type": "array",
+                      "description": "Start and end date (inclusive)",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": {
+                      "type": "string",
+                      "format": "date"
+                      }
+                    },
+                    "performance": {
+                      "type": "array",
+                      "description": "Performance rank range [min, max]",
+                      "minItems": 1,
+                      "items": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    },
+                    "count_at_least": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

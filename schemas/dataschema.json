@@ -1,0 +1,83 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "CompetitionResults",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "Date": {
+                "type": "string",
+                "format": "date",
+                "description": "Event date in YYYY-MM-DD"
+            },
+            "Year": {
+                "type": "integer",
+                "minimum": 1800,
+                "maximum": 2100
+            },
+            "Comp.SetDetail": {
+                "type": "string"
+            },
+            "Sport": {
+                "type": "string"
+            },
+            "Discipline": {
+                "type": "string"
+            },
+            "Gender": {
+                "type": "string",
+                "description": "e.g., Male, Female, Mixed"
+            },
+            "Class": {
+                "type": "string",
+                "enum": [
+                    "Seniors",
+                    "Juniors",
+                    "Under 23"
+                ]
+            },
+            "Rank": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1,
+                "description": "Numeric rank; null if not applicable"
+            },
+            "Team Members": {
+                "type": "string",
+                "enum": [
+                    "Yes",
+                    "No"
+                ]
+            },
+            "Person/Team": {
+              "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "DoB": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "format": "date",
+                "description": "Date of birth in YYYY-MM-DD or null if unknown"
+            },
+            "Is Olympic Discipline": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "enum": [
+                    "Yes",
+                    "",
+                    null
+                ],
+                "description": "Contains 'yes' for Olympic disciplines or blank"
+            }
+        },
+        "additionalProperties": false
+    }
+}

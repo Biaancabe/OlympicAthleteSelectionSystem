@@ -1,0 +1,83 @@
+Description: "Skeleton Qualification Rules for Olympic Games 2026"
+created at: 2025-12-18
+updated at: 2025-12-18
+
+version: 1.0
+
+# Special Age Criteria in Route 5 (secondary criterias). 
+
+rule_tree:
+  description: "Qualification Criteria for Skeleton at Olympic Games 2026"
+  sport: "Skeleton"
+  class: "Seniors"
+
+  criteria: 
+    # Route 1: 2x Top-8 World Cup 2025/2026
+    - description: "2x Top-8 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "Top-8 WC 2025/26"
+        competition: ["IBSF World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 8]
+        count_at_least: 2
+
+    # Route 2: 1x Top-8 World Championships 2025 AND 1x Top-8 World Cup 2025/2026
+    - description: "Top-8 WM 2025 + Top-8 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "Top-8 WM 2025"
+        competition: ["IBSF World Championships"]
+        date: 2025
+        performance: [1, 8]
+        count_at_least: 1
+
+      - description: "Top-8 WC 2025/26"
+        competition: ["IBSF World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 6]
+        count_at_least: 1
+
+    # Route 3: 1x Top-8 EM 2025 AND 1x Top-8 World Cup 2025/2026
+    - description: "Top-8 EM 2025 + Top-8 WC 2025/26"
+      priority: 1
+      conditions: 
+
+      - description: "Top-8 EM 2025"
+        competition: ["IBSF European Championships"]
+        date: ["2025-03-06", "2025-03-16"]
+        performance: [1, 8]
+        count_at_least: 1
+
+      - description: "Top-8 WC 2025/26"
+        competition: ["IBSF World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 8]
+        count_at_least: 1
+
+    # Route 4: 2x Top-16 World Cup 2025/2026
+    - description: "2x Top-16 WC 2025/26"
+      priority: 2
+      conditions: 
+
+      - description: "Top-16 WC 2025/26"
+        competition: ["IBSF World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 16]
+        count_at_least: 2
+
+    # Route 5: 2x Top-20 World Cup 2025/2026 AND Age <= 24
+    - description: "2x Top-20 WC 2025/26 + control manually(Age <= 24)"
+      priority: 2
+      conditions: 
+
+      - description: "Top-20 WC 2025/26"
+        competition: ["IBSF World Cup"]
+        date: ["2025-11-01", "2026-01-18"]
+        performance: [1, 20]
+        count_at_least: 2
+
+#      - description: "Age <= 24"
+#        age: [1, 24]

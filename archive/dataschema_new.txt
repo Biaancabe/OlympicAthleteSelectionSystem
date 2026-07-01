@@ -1,0 +1,20 @@
+Date
+Year
+Comp.SetDetail	
+Sport	
+Discipline	
+Gender	
+Class	
+Rank	
+Team Members	
+Person/Team	
+Person
+Person First Name
+Person Last Name
+PersonGender
+DoB
+Result
+Sec/Mtr/Pts
+World Ranking
+Rank Within Country
+Is Olympic Discipline
