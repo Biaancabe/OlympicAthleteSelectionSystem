@@ -72,6 +72,15 @@
                 ],
                 "description": "Raw performance value (time/points/distance), e.g. '2\\'501' or '78.77'; null if not applicable"
             },
+            "source": {
+                "type": "string",
+                "enum": [
+                    "podium_csv",
+                    "manual_csv",
+                    "manual_form"
+                ],
+                "description": "Origin of the record for traceability"
+            },
             "Is Olympic Discipline": {
                 "type": [
                     "string",

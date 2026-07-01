@@ -93,7 +93,12 @@ def clean_data(data, schema):
     cleaned = data[valid_columns].copy()
 
     # 2) remove per-member team rows, keep the team-level row
+    rows_before = len(cleaned)
     cleaned = cleaned[cleaned["Team Members"] != "Yes"]
+    rows_after = len(cleaned)
+    removed = rows_before - rows_after
+    print(f"clean_data: removed {removed} team-member rows "
+          f"({rows_before} -> {rows_after})")
     cleaned = cleaned.drop(columns=["Team Members"])
 
     # 3) rank -> Rank_num + Rank_Status
