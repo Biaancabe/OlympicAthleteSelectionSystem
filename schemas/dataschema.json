@@ -65,6 +65,13 @@
                 "format": "date",
                 "description": "Date of birth in YYYY-MM-DD or null if unknown"
             },
+            "Sec/Mtr/Pts": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "description": "Raw performance value (time/points/distance), e.g. '2\\'501' or '78.77'; null if not applicable"
+            },
             "Is Olympic Discipline": {
                 "type": [
                     "string",
