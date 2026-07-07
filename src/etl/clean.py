@@ -88,9 +88,8 @@ def clean_olympic(value):
 
 
 def clean_data(data, schema):
-    # 1) keep only columns defined in the schema
-    valid_columns = [prop for prop in schema['properties'].keys() if prop in data.columns]
-    cleaned = data[valid_columns].copy()
+    # work on a copy; keep all raw columns for now (needed during cleaning)
+    cleaned = data.copy()
 
     # 2) remove per-member team rows, keep the team-level row
     rows_before = len(cleaned)
@@ -115,5 +114,9 @@ def clean_data(data, schema):
 
     # 7) Is Olympic Discipline -> True / False / None
     cleaned["Is Olympic Discipline"] = cleaned["Is Olympic Discipline"].apply(clean_olympic)
+
+    # keep only columns defined in the schema (drops raw Rank, Sec/Mtr/Pts, etc.)
+    valid_columns = [prop for prop in schema['properties'].keys() if prop in cleaned.columns]
+    cleaned = cleaned[valid_columns].copy()
 
     return cleaned

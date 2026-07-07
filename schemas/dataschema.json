@@ -35,15 +35,7 @@
                     "Juniors",
                     "Under 23"
                 ]
-            },
-            "Rank": {
-                "type": [
-                    "integer",
-                    "null"
-                ],
-                "minimum": 1,
-                "description": "Numeric rank; null if not applicable"
-            },
+                        },
             "Team Members": {
                 "type": "string",
                 "enum": [
@@ -65,13 +57,6 @@
                 "format": "date",
                 "description": "Date of birth in YYYY-MM-DD or null if unknown"
             },
-            "Sec/Mtr/Pts": {
-                "type": [
-                    "string",
-                    "null"
-                ],
-                "description": "Raw performance value (time/points/distance), e.g. '2\\'501' or '78.77'; null if not applicable"
-            },
             "source": {
                 "type": "string",
                 "enum": [
@@ -81,17 +66,55 @@
                 ],
                 "description": "Origin of the record for traceability"
             },
-            "Is Olympic Discipline": {
+            "Rank_num": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "minimum": 1,
+                "description": "Cleaned numeric rank; null if DNF/DNQ/DNS/DSQ or missing"
+            },
+            "Rank_Status": {
                 "type": [
                     "string",
                     "null"
                 ],
                 "enum": [
-                    "Yes",
-                    "",
+                    "DNF",
+                    "DNQ",
+                    "DNS",
+                    "DSQ",
                     null
                 ],
-                "description": "Contains 'yes' for Olympic disciplines or blank"
+                "description": "Non-standard result status; null for a normal placement"
+            },
+            "Result_num": {
+                "type": [
+                    "number",
+                    "null"
+                ],
+                "description": "Cleaned numeric performance value (time/points/distance); null if DNF/DNQ/DNS/DSQ or missing"
+            },
+            "Result_Status": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "enum": [
+                    "DNF",
+                    "DNQ",
+                    "DNS",
+                    "DSQ",
+                    null
+                ],
+                "description": "Non-standard result status for the performance value; null if normal"
+            },
+            "Is Olympic Discipline": {
+                "type": [
+                    "boolean",
+                    "null"
+                ],
+                "description": "True if Olympic discipline, False if not, null if unknown"
             }
         },
         "additionalProperties": false
