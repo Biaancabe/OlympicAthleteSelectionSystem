@@ -14,6 +14,7 @@ def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_d
     # 2) clean
     cleaned, clean_log = clean_data(data, item_schema)
 
+
     # 2b) remove exact duplicate results (idempotency)
     key_cols = ['source', 'Date', 'Person/Team', 'Comp.SetDetail',
                 'Discipline', 'Class', 'Gender']

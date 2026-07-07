@@ -24,3 +24,6 @@ env/
 
 # ---- Archive (reference material from a separate project, not part of this thesis) ----
 archive/
+
+# ---- Generated ETL output (regenerated from code, not versioned) ----
+output/
