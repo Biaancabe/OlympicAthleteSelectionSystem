@@ -88,7 +88,7 @@ def clean_olympic(value):
 
 
 def clean_data(data, schema):
-    # work on a copy; keep all raw columns for now (needed during cleaning)
+    # 1) work on a copy; keep all raw columns for now (needed during cleaning)
     cleaned = data.copy()
 
     # 2) remove per-member team rows, keep the team-level row
@@ -99,6 +99,12 @@ def clean_data(data, schema):
     print(f"clean_data: removed {removed} team-member rows "
           f"({rows_before} -> {rows_after})")
     cleaned = cleaned.drop(columns=["Team Members"])
+    # collect cleaning info to pass back to the pipeline / report
+    clean_log = {
+        "rows_before": rows_before,
+        "rows_after": rows_after,
+        "team_member_rows_removed": removed,
+    }
 
     # 3) rank -> Rank_num + Rank_Status
     cleaned[["Rank_num", "Rank_Status"]] = cleaned["Rank"].apply(clean_rank).apply(pd.Series)
@@ -119,4 +125,4 @@ def clean_data(data, schema):
     valid_columns = [prop for prop in schema['properties'].keys() if prop in cleaned.columns]
     cleaned = cleaned[valid_columns].copy()
 
-    return cleaned
+    return cleaned, clean_log
