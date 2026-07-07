@@ -2,9 +2,10 @@ import pandas as pd
 from src.etl.load import load_data, load_json_schema
 from src.etl.clean import clean_data
 from src.etl.validate import validate_data
+import os
 
 
-def run_pipeline(data_path, schema_path, source="podium_csv", sep=None):
+def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_dir="output"):
     # 1) load raw data + schema
     data = load_data(data_path, sep=sep, source=source)
     schema = load_json_schema(schema_path)
@@ -29,5 +30,12 @@ def run_pipeline(data_path, schema_path, source="podium_csv", sep=None):
     # 4) merge the cleaning info into the report
     report["cleaning"] = clean_log
 
-    # 5) return both the cleaned data and the combined report
+    # 5) save the cleaned data to disk (semicolon-separated for robustness)
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, "cleaned_data.csv")
+    cleaned.to_csv(output_path, sep=";", index=False)
+    report["output_path"] = output_path
+    print(f"run_pipeline: saved cleaned data to {output_path}")
+
+    # 6) return both the cleaned data and the combined report
     return cleaned, report
