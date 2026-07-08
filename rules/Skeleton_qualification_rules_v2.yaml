@@ -1,0 +1,116 @@
+Description: "Skeleton Qualification Rules for Olympic Games 2026"
+created at: 2025-12-18
+updated at: 2025-12-18
+version: "1.0"
+
+rule_tree:
+  description: "Qualification Criteria for Skeleton at Olympic Games 2026"
+  sport: "Skeleton"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 2x Top-8 World Cup 2025/2026
+    - criterion_id: "skeleton_r1"
+      description: "2x Top-8 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "skeleton_r1_c1"
+          description: "Top-8 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 2
+
+    # Route 2: Top-8 WM 2025 (1x) AND Top-6 WC 2025/26 (1x)
+    - criterion_id: "skeleton_r2"
+      description: "Top-8 WM 2025 & Top-6 WC 2025/26"
+      priority: 1
+      conditions:
+        # first condition: Top-8 at World Championships 2025
+        - condition_id: "skeleton_r2_c1"
+          description: "Top-8 WM 2025"
+          competition: ["IBSF World Championships"]
+          date: ["2025-01-01", "2025-12-31"]          # year 2025 -> full range
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+        # second condition: Top-6 at World Cup 2025/26
+        - condition_id: "skeleton_r2_c2"
+          description: "Top-6 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+
+    # Route 3: Top-8 EM 2025 (1x) AND Top-8 WC 2025/26 (1x)
+    - criterion_id: "skeleton_r3"
+      description: "Top-8 EM 2025 & Top-8 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "skeleton_r3_c1"
+          description: "Top-8 EM 2025"
+          competition: ["IBSF European Championships"]
+          date: ["2025-03-06", "2025-03-16"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+        - condition_id: "skeleton_r3_c2"
+          description: "Top-8 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 4: 2x Top-16 World Cup 2025/26
+    - criterion_id: "skeleton_r4"
+      description: "2x Top-16 WC 2025/26"
+      priority: 2
+      conditions:
+        - condition_id: "skeleton_r4_c1"
+          description: "Top-16 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 2
+
+    # Route 5: 2x Top-20 World Cup 2025/26 AND Age <= 24
+    - criterion_id: "skeleton_r5"
+      description: "2x Top-20 WC 2025/26 & Age <= 24"
+      priority: 2
+      conditions:
+        - condition_id: "skeleton_r5_c1"               # fixed: was skeleton_r4_c1
+          description: "Top-20 WC 2025/26 & Age <= 24"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          age:                                         # age next to performance, not after count_at_least
+            metric: age
+            operator: less_or_equal
+            value: 24
+          count_at_least: 2
