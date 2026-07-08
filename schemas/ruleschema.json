@@ -3,45 +3,20 @@
   "title": "SelectionRules",
   "description": "Schema for selection rules for Swiss Olympic",
   "type": "object",
-  "required": [
-    "Description",
-    "created at",
-    "updated at",
-    "version",
-    "rule_tree"
-  ],
+  "required": ["Description", "created at", "updated at", "version", "rule_tree"],
   "properties": {
-    "Description": {
-      "type": "string"
-    },
-    "created at": {
-      "type": "string",
-      "format": "date"
-    },
-    "updated at": {
-      "type": "string",
-      "format": "date"
-    },
-    "version": {
-      "type": "string",
-      "pattern": "^\\d+\\.\\d+$"
-    },
+    "Description": { "type": "string" },
+    "created at": { "type": "string", "format": "date" },
+    "updated at": { "type": "string", "format": "date" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
     "rule_tree": {
       "type": "object",
-      "required": [
-        "description",
-        "sport",
-        "criteria"
-      ],
+      "required": ["description", "sport", "criteria"],
       "properties": {
-        "description": {
-          "type": "string"
-        },
-        "sport": {
-          "type": "string"
-        },
+        "description": { "type": "string" },
+        "sport": { "type": "string" },
         "class": {
-          "type": "string",
+          "type": ["string", "null"],
           "enum": ["Seniors", "Juniors", "Under 23", null]
         },
         "criteria": {
@@ -49,76 +24,42 @@
           "minItems": 1,
           "items": {
             "type": "object",
-            "required": [
-              "description",
-              "priority",
-              "conditions"
-            ],
+            "required": ["criterion_id", "description", "priority", "conditions"],
             "properties": {
-              "description": {
-                "type": "string"
-              },
+              "criterion_id": { "type": "string" },
+              "description": { "type": "string" },
               "discipline": {
                 "type": "array",
-                "items": {
-                  "type": "string"
-                }
+                "items": { "type": "string" }
               },
               "gender": {
                 "type": "array",
-                "items": {
-                  "type": "string"
-                }
+                "items": { "type": "string" }
               },
-              "priority": {
-                "type": "integer",
-                "minimum": 1
-              },
+              "priority": { "type": "integer", "minimum": 1 },
               "conditions": {
                 "type": "array",
                 "minItems": 1,
                 "items": {
                   "type": "object",
-                  "required": [
-                    "description",
-                    "competition",
-                    "date",
-                    "performance",
-                    "count_at_least"
-                  ],
+                  "required": ["condition_id", "description", "competition", "date", "performance", "count_at_least"],
                   "properties": {
-                    "description": {
-                      "type": "string"
-                    },
+                    "condition_id": { "type": "string" },
+                    "description": { "type": "string" },
                     "competition": {
                       "type": "array",
-                      "items": {
-                      "type": "string"
-                      }
+                      "items": { "type": "string" }
                     },
                     "date": {
                       "type": "array",
                       "description": "Start and end date (inclusive)",
                       "minItems": 2,
                       "maxItems": 2,
-                      "items": {
-                      "type": "string",
-                      "format": "date"
-                      }
+                      "items": { "type": "string", "format": "date" }
                     },
-                    "performance": {
-                      "type": "array",
-                      "description": "Performance rank range [min, max]",
-                      "minItems": 1,
-                      "items": {
-                        "type": "integer",
-                        "minimum": 1
-                      }
-                    },
-                    "count_at_least": {
-                      "type": "integer",
-                      "minimum": 1
-                    }
+                    "performance": { "$ref": "#/$defs/comparison" },
+                    "age": { "$ref": "#/$defs/comparison" },
+                    "count_at_least": { "type": "integer", "minimum": 1 }
                   },
                   "additionalProperties": false
                 }
@@ -131,5 +72,40 @@
       "additionalProperties": false
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+
+  "$defs": {
+    "comparison": {
+      "type": "object",
+      "required": ["metric", "operator"],
+      "properties": {
+        "metric": {
+          "type": "string",
+          "enum": ["rank", "points", "time", "age"]
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["less_or_equal", "greater_or_equal", "equal", "between"]
+        },
+        "value": { "type": "number" },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      },
+      "oneOf": [
+        {
+          "properties": { "operator": { "const": "between" } },
+          "required": ["min", "max"]
+        },
+        {
+          "properties": {
+            "operator": {
+              "enum": ["less_or_equal", "greater_or_equal", "equal"]
+            }
+          },
+          "required": ["value"]
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
 }
