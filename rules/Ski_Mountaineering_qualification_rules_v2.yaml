@@ -1,0 +1,42 @@
+Description: "Ski Mountaineering Qualification Rules for Olympic Games 2026"
+created at: 2025-12-18
+updated at: 2025-12-18
+version: "1.0"
+
+rule_tree:
+  description: "Qualification Criteria for Ski Mountaineering at Olympic Games 2026"
+  sport: "Ski Mountaineering"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 1x Top-2 World Championships 2025
+    - criterion_id: "ski_mountaineering_r1"
+      description: "Top-2 WM 2025"
+      priority: 1
+      conditions:
+        - condition_id: "ski_mountaineering_r1_c1"
+          description: "Top-2 WM 2025"
+          competition: ["ISMF World Championships"]
+          date: ["2025-03-02", "2025-03-08"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 2
+          count_at_least: 1
+
+    # Route 2: 1x Top-4 National Ranking 2026
+    - criterion_id: "ski_mountaineering_r2"
+      description: "Top-4 National Ranking 2026"
+      priority: 1
+      conditions:
+        - condition_id: "ski_mountaineering_r2_c1"
+          description: "Top-4 National Ranking 2026"
+          competition: ["National Ranking"]
+          date: ["2026-01-01", "2026-01-15"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 4
+          count_at_least: 1

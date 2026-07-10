@@ -1,0 +1,42 @@
+Description: "Alpine Skiing Qualification Rules for Olympic Games 2026"
+created at: 2025-12-18
+updated at: 2025-12-22
+version: "1.1"
+
+rule_tree:
+  description: "Qualification Criteria for Alpine Skiing at Olympic Games 2026"
+  sport: "Alpine Skiing"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 1x Top-7 World Cup 2025/2026
+    - criterion_id: "alpine_skiing_r1"
+      description: "Top-7 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "alpine_skiing_r1_c1"
+          description: "Top-7 WC 2025/26"
+          competition: ["Audi FIS Ski World Cup"]
+          date: ["2025-10-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 7
+          count_at_least: 1
+
+    # Route 2: 2x Top-15 World Cup 2025/2026
+    - criterion_id: "alpine_skiing_r2"
+      description: "2x Top-15 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "alpine_skiing_r2_c1"
+          description: "Top-15 WC 2025/26"
+          competition: ["Audi FIS Ski World Cup"]
+          date: ["2025-10-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 2
