@@ -1,0 +1,120 @@
+Description: "Biathlon Qualification Rules for Olympic Games 2026"
+created at: 2025-12-02
+updated at: 2025-12-22
+version: "1.1"
+
+rule_tree:
+  description: "Qualification Criteria for Biathlon at Olympic Games 2026"
+  sport: "Biathlon"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 1x Top-3 World Championships 2025 AND 1x Top-30 World Cup 2025/2026
+    - criterion_id: "biathlon_r1"
+      description: "Top 3 WM + Top 30 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "biathlon_r1_c1"
+          description: "Top-3 WM 2025"
+          competition: ["IBU World Championships"]
+          date:  ["2025-02-12", "2025-02-23"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "biathlon_r1_c2"
+          description: "Top-30 WC 2025/26"
+          competition: ["BMW IBU World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 30
+          count_at_least: 1
+
+    # Route 2: 1x Top-6 World Cup 2024/25 AND 1x Top-25 World Cup 2025/26
+    - criterion_id: "biathlon_r2"
+      description: "Top-6 WC 2024/25 + Top-25 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "biathlon_r2_c1"
+          description: "Top-6 WC 2024/25"
+          competition: ["BMW IBU World Cup"]
+          date: ["2024-11-30", "2025-03-23"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+        - condition_id: "biathlon_r2_c2"
+          description: "Top-25 WC 2025/26"
+          competition: ["BMW IBU World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Route 3: 1x Top-15 World Cup 2025/26
+    - criterion_id: "biathlon_r3"
+      description: Top-15 WC 2025/26
+      priority: 1
+      conditions:
+        - condition_id: "biathlon_r3_c1"
+          description: "Top-15 WC 2025/26"
+          competition: ["BMW IBU World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+
+    # Route 4: 2x Top-25 World Cup 2025/26
+    - criterion_id: "biathlon_r4"
+      description: "2x Top-25 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "biathlon_r4_c1"
+          description: "2x Top-25 WC 2025/2026"
+          competition: ["BMW IBU World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 2
+
+    # Route 5: 1x Top-5 IBU Cup 2025/26 AND 2x Top-30 World Cup 2025/26
+    - criterion_id: "biathlon_r5"
+      description: "Top-5 IBU Cup 2025/26 + 2x Top-30 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "biathlon_r5_c1"
+          description: "Top-5 IBU Cup 2025/26"
+          competition: ["IBU Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 5
+          count_at_least: 1
+        - condition_id: "biathlon_r5_c2"
+          description: "2x Top-30 WC 2025/26"
+          competition: ["BMW IBU World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 30
+          count_at_least: 2
