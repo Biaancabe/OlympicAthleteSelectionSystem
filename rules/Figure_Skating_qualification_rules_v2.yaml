@@ -1,0 +1,276 @@
+Description: "Figure Skating Qualification Rules for Olympic Games 2026"
+created at: 2025-12-15
+updated at: 2025-12-22
+version: "1.1"
+
+# Special structure: a minimum number of points must be reached in ANY ONE of the
+# listed competitions. Because each competition has its own time window, and because
+# reaching the score in ONE competition is enough (OR-logic), each eligible competition
+# is modelled as its own route. Routes are gender-specific (185 pts Women, 210 pts Men).
+# No Pairs or Ice Dance: no quota places available for Switzerland.
+
+rule_tree:
+  description: "Qualification Criteria for Figure Skating at Olympic Games 2026"
+  sport: "Figure Skating"
+  class: "Seniors"
+
+  criteria:
+    # ---------- WOMEN: minimum 185 points ----------
+
+    # Route 1: Women, World Championships
+    - criterion_id: "figure_skating_r1"
+      description: "Women Singles 185 points - World Championships"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r1_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU World Figure Skating Championships"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 2: Women, European Championships 2025
+    - criterion_id: "figure_skating_r2"
+      description: "Women Singles 185 points - European Championships 2025"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r2_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU European Figure Skating Championships"]
+          date: ["2025-01-01", "2025-07-31"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 3: Women, European Championships 2026
+    - criterion_id: "figure_skating_r3"
+      description: "Women Singles 185 points - European Championships 2026"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r3_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU European Figure Skating Championships"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 4: Women, Grand Prix Senior
+    - criterion_id: "figure_skating_r4"
+      description: "Women Singles 185 points - Grand Prix Senior"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r4_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU Grand Prix Senior"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 5: Women, Challenger Senior
+    - criterion_id: "figure_skating_r5"
+      description: "Women Singles 185 points - Challenger Senior"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r5_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU Challenger Senior"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 6: Women, Olympic Qualifier
+    - criterion_id: "figure_skating_r6"
+      description: "Women Singles 185 points - Olympic Qualifier"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r6_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU Olympic Qualifier"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 7: Women, OWG Test Event
+    - criterion_id: "figure_skating_r7"
+      description: "Women Singles 185 points - OWG Test Event"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r7_c1"
+          description: "Minimum 185 points"
+          competition: ["ISU OWG Test Event"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # Route 8: Women, Swiss Championships
+    - criterion_id: "figure_skating_r8"
+      description: "Women Singles 185 points - Swiss Championships"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r8_c1"
+          description: "Minimum 185 points"
+          competition: ["National Championships"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 185
+          count_at_least: 1
+
+    # ---------- MEN: minimum 210 points ----------
+
+    # Route 9: Men, World Championships
+    - criterion_id: "figure_skating_r9"
+      description: "Men Singles 210 points - World Championships"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r9_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU World Figure Skating Championships"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 10: Men, European Championships 2025
+    - criterion_id: "figure_skating_r10"
+      description: "Men Singles 210 points - European Championships 2025"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r10_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU European Figure Skating Championships"]
+          date: ["2025-01-01", "2025-07-31"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 11: Men, European Championships 2026
+    - criterion_id: "figure_skating_r11"
+      description: "Men Singles 210 points - European Championships 2026"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r11_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU European Figure Skating Championships"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 12: Men, Grand Prix Senior
+    - criterion_id: "figure_skating_r12"
+      description: "Men Singles 210 points - Grand Prix Senior"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r12_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU Grand Prix Senior"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 13: Men, Challenger Senior
+    - criterion_id: "figure_skating_r13"
+      description: "Men Singles 210 points - Challenger Senior"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r13_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU Challenger Senior"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 14: Men, Olympic Qualifier
+    - criterion_id: "figure_skating_r14"
+      description: "Men Singles 210 points - Olympic Qualifier"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r14_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU Olympic Qualifier"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 15: Men, OWG Test Event
+    - criterion_id: "figure_skating_r15"
+      description: "Men Singles 210 points - OWG Test Event"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r15_c1"
+          description: "Minimum 210 points"
+          competition: ["ISU OWG Test Event"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
+
+    # Route 16: Men, Swiss Championships
+    - criterion_id: "figure_skating_r16"
+      description: "Men Singles 210 points - Swiss Championships"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "figure_skating_r16_c1"
+          description: "Minimum 210 points"
+          competition: ["National Championships"]
+          date: ["2025-08-01", "2026-01-18"]
+          performance:
+            metric: points
+            operator: greater_or_equal
+            value: 210
+          count_at_least: 1
