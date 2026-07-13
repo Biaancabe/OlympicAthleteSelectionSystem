@@ -1,0 +1,125 @@
+Description: "Bobsleigh Qualification Rules for Olympic Games 2026"
+created at: 2025-12-15
+updated at: 2025-12-22
+version: "1.2"
+
+# Structure notes:
+# - Route 5 has an age criterion (age <= 27), modelled with the same
+#   metric/operator/value structure as performance.
+# - TEAM VERIFICATION (2-Man / 4-Man): whether the whole team may run for
+#   Switzerland is verified MANUALLY outside this YAML structure. It is not
+#   modelled here. In the results file, the Person/Team column contains the pilot's name.
+#
+# OPEN QUESTION for Lionel (age criterion, Route 5): reference date for age,
+# whether age must hold at each qualifying result or at a fixed cutoff, and
+# automatic vs. manual review. Same open question as for Skeleton Route 5.
+
+rule_tree:
+  description: "Qualification Criteria for Bobsleigh at Olympic Games 2026"
+  sport: "Bobsleigh"
+  class: "Seniors"
+
+  criteria:
+    # Route 1: 2x Top-6 World Cup 2025/2026
+    - criterion_id: "bobsleigh_r1"
+      description: "2x Top-6 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "bobsleigh_r1_c1"
+          description: "Top-6 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 2
+
+    # Route 2: 1x Top-6 WM 2025 AND 1x Top-6 World Cup 2025/2026
+    - criterion_id: "bobsleigh_r2"
+      description: "Top-6 WM 2025 + Top-6 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "bobsleigh_r2_c1"
+          description: "Top-6 WM 2025"
+          competition: ["IBSF World Championships"]
+          date: ["2025-03-06", "2025-03-16"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+        - condition_id: "bobsleigh_r2_c2"
+          description: "Top-6 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+
+    # Route 3: 1x Top-6 EM 2025 AND 1x Top-6 World Cup 2025/2026
+    - criterion_id: "bobsleigh_r3"
+      description: "Top-6 EM 2025 + Top-6 WC 2025/26"
+      priority: 1
+      conditions:
+        - condition_id: "bobsleigh_r3_c1"
+          description: "Top-6 EM 2025"
+          competition: ["IBSF European Championships"]
+          date: ["2025-02-03", "2025-02-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+        - condition_id: "bobsleigh_r3_c2"
+          description: "Top-6 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 6
+          count_at_least: 1
+
+    # Route 4: 2x Top-12 World Cup 2025/2026
+    - criterion_id: "bobsleigh_r4"
+      description: "2x Top-12 WC 2025/26"
+      priority: 2
+      conditions:
+        - condition_id: "bobsleigh_r4_c1"
+          description: "Top-12 WC 2025/26"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 2
+
+    # Route 5: 2x Top-14 World Cup 2025/2026 AND Age <= 27
+    - criterion_id: "bobsleigh_r5"
+      description: "2x Top-14 WC 2025/26 & Age <= 27"
+      priority: 2
+      conditions:
+        - condition_id: "bobsleigh_r5_c1"
+          description: "2x Top-14 WC 2025/26 & Age <= 27"
+          competition: ["IBSF World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 14
+          age:
+            metric: age
+            operator: less_or_equal
+            value: 27
+          count_at_least: 2
