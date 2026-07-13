@@ -1,0 +1,479 @@
+Description: "Freestyle Skiing Qualification Rules for Olympic Games 2026"
+created at: 2025-12-22
+updated at: 2025-12-22
+version: "1.0"
+
+# Structure notes:
+# - discipline and gender are specified on the criterion (route) level.
+# - A list in the "competition" field means OR (any one of the listed competitions counts).
+# - Ski Cross has a different World Cup time window than the other disciplines.
+#
+# OPEN QUESTION for Martin (Routes 2.1 / 2.2):
+# The original file had an invalid date range for "World Cup Standings 2024/25"
+# (end before start: ["2025-03-01", "2025-01-07"]). The source document specifies
+# only "Year: 2025" for these standings, so it is provisionally set to
+# ["2025-01-01", "2025-12-31"]. Confirm the correct standings window with Martin.
+
+rule_tree:
+  description: "Qualification Criteria for Freestyle Skiing at Olympic Games 2026"
+  sport: "Freestyle Skiing"
+  class: "Seniors"
+
+  criteria:
+    # Route 1.1: Top-3 WM 2025 AND 1x Top-8 WC 25/26 (all disciplines except Ski Cross)
+    - criterion_id: "freestyle_skiing_r1_1"
+      description: "Top-3 WM 2025 + 1x Top-8 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Moguls", "Dual Moguls", "Big Air", "Slopestyle", "Halfpipe"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r1_1_c1"
+          description: "Top-3 WM 2025"
+          competition: ["FIS Freestyle World Ski Championships"]
+          date: ["2025-03-17", "2025-03-30"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r1_1_c2"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 1.2: Top-3 WM 2025 AND 1x Top-8 WC 25/26 (Ski Cross, different WC window)
+    - criterion_id: "freestyle_skiing_r1_2"
+      description: "Top-3 WM 2025 + 1x Top-8 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r1_2_c1"
+          description: "Top-3 WM 2025"
+          competition: ["FIS Freestyle World Ski Championships"]
+          date: ["2025-03-17", "2025-03-30"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r1_2_c2"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 2.1: Top-3 WC Standings 24/25 AND 1x Top-8 WC 25/26 (all disciplines except Ski Cross)
+    - criterion_id: "freestyle_skiing_r2_1"
+      description: "Top-3 WC Standings 24/25 + 1x Top-8 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Moguls", "Dual Moguls", "Big Air", "Slopestyle", "Halfpipe"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r2_1_c1"
+          description: "Top-3 WC Standings 24/25"
+          competition: ["FIS Freeski World Cup standings"]
+          date: ["2025-01-01", "2025-12-31"]   # OPEN: provisional, see header note
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r2_1_c2"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 2.2: Top-3 WC Standings 24/25 AND 1x Top-8 WC 25/26 (Ski Cross)
+    - criterion_id: "freestyle_skiing_r2_2"
+      description: "Top-3 WC Standings 24/25 + 1x Top-8 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r2_2_c1"
+          description: "Top-3 WC Standings 24/25"
+          competition: ["FIS Freeski World Cup standings"]
+          date: ["2025-01-01", "2025-12-31"]   # OPEN: provisional, see header note
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r2_2_c2"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 3.1: 2x Top-3 WC 25/26 (all disciplines except Ski Cross)
+    - criterion_id: "freestyle_skiing_r3_1"
+      description: "2x Top-3 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Moguls", "Dual Moguls", "Big Air", "Slopestyle", "Halfpipe"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r3_1_c1"
+          description: "Top-3 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 2
+
+    # Route 3.2: 2x Top-3 WC 25/26 (Ski Cross)
+    - criterion_id: "freestyle_skiing_r3_2"
+      description: "2x Top-3 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      priority: 1
+      conditions:
+        - condition_id: "freestyle_skiing_r3_2_c1"
+          description: "Top-3 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 2
+
+    # Route 4.1: 1x Top-8 WC 25/26 (all disciplines except Ski Cross)
+    - criterion_id: "freestyle_skiing_r4_1"
+      description: "1x Top-8 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Moguls", "Dual Moguls", "Big Air", "Slopestyle", "Halfpipe"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r4_1_c1"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 4.2: 1x Top-8 WC 25/26 (Ski Cross)
+    - criterion_id: "freestyle_skiing_r4_2"
+      description: "1x Top-8 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r4_2_c1"
+          description: "1x Top-8 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
+          count_at_least: 1
+
+    # Route 5.1: Women, 2x Top-12 WC 25/26 (Aerials, Aerials Team, Halfpipe, Slopestyle, Big Air)
+    - criterion_id: "freestyle_skiing_r5_1"
+      description: "Women, 2x Top-12 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Halfpipe", "Slopestyle", "Big Air"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_1_c1"
+          description: "2x Top-12 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 2
+
+    # Route 5.2: Men, 2x Top-16 WC 25/26 (Aerials, Aerials Team, Halfpipe)
+    - criterion_id: "freestyle_skiing_r5_2"
+      description: "Men, 2x Top-16 WC 25/26"
+      discipline: ["Aerials", "Aerials Team", "Halfpipe"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_2_c1"
+          description: "2x Top-16 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 2
+
+    # Route 5.3: Women, 2x Top-16 WC 25/26 (Moguls, Dual Moguls)
+    - criterion_id: "freestyle_skiing_r5_3"
+      description: "Women, 2x Top-16 WC 25/26"
+      discipline: ["Moguls", "Dual Moguls"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_3_c1"
+          description: "2x Top-16 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 2
+
+    # Route 5.4: Men, 2x Top-20 WC 25/26 (Moguls, Dual Moguls, Slopestyle, Big Air)
+    - criterion_id: "freestyle_skiing_r5_4"
+      description: "Men, 2x Top-20 WC 25/26"
+      discipline: ["Moguls", "Dual Moguls", "Slopestyle", "Big Air"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_4_c1"
+          description: "2x Top-20 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 2
+
+    # Route 5.5: Women, 2x Top-12 WC 25/26 (Ski Cross)
+    - criterion_id: "freestyle_skiing_r5_5"
+      description: "Women, 2x Top-12 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_5_c1"
+          description: "2x Top-12 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 2
+
+    # Route 5.6: Men, 2x Top-20 WC 25/26 (Ski Cross)
+    - criterion_id: "freestyle_skiing_r5_6"
+      description: "Men, 2x Top-20 WC 25/26 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r5_6_c1"
+          description: "2x Top-20 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 2
+
+    # Route 6.1: Women, 1x Top-12 WC 25/26 AND (1x Top-12 WM 2025 OR 1x Top-12 WC 24/25)
+    # (Aerials, Aerials Team, Halfpipe, Slopestyle, Big Air)
+    - criterion_id: "freestyle_skiing_r6_1"
+      description: "Women, 1x Top-12 WC 25/26 + 1x Top-12 WM 2025 or WC 24/25"
+      discipline: ["Aerials", "Aerials Team", "Halfpipe", "Slopestyle", "Big Air"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_1_c1"
+          description: "1x Top-12 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_1_c2"
+          description: "1x Top-12 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 1
+
+    # Route 6.2: Men, 1x Top-16 WC 25/26 AND (1x Top-16 WM 2025 OR 1x Top-16 WC 24/25)
+    # (Aerials, Aerials Team, Halfpipe)
+    - criterion_id: "freestyle_skiing_r6_2"
+      description: "Men, 1x Top-16 WC 25/26 + 1x Top-16 WM 2025 or WC 24/25"
+      discipline: ["Aerials", "Aerials Team", "Halfpipe"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_2_c1"
+          description: "1x Top-16 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_2_c2"
+          description: "1x Top-16 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 1
+
+    # Route 6.3: Women, 1x Top-16 WC 25/26 AND (1x Top-16 WM 2025 OR 1x Top-16 WC 24/25)
+    # (Moguls, Dual Moguls)
+    - criterion_id: "freestyle_skiing_r6_3"
+      description: "Women, 1x Top-16 WC 25/26 + 1x Top-16 WM 2025 or WC 24/25"
+      discipline: ["Moguls", "Dual Moguls"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_3_c1"
+          description: "1x Top-16 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_3_c2"
+          description: "1x Top-16 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
+          count_at_least: 1
+
+    # Route 6.4: Men, 1x Top-20 WC 25/26 AND (1x Top-20 WM 2025 OR 1x Top-20 WC 24/25)
+    # (Moguls, Dual Moguls, Slopestyle, Big Air)
+    - criterion_id: "freestyle_skiing_r6_4"
+      description: "Men, 1x Top-20 WC 25/26 + 1x Top-20 WM 2025 or WC 24/25"
+      discipline: ["Moguls", "Dual Moguls", "Slopestyle", "Big Air"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_4_c1"
+          description: "1x Top-20 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_4_c2"
+          description: "1x Top-20 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
+
+    # Route 6.5: Women, 1x Top-12 WC 25/26 AND (1x Top-12 WM 2025 OR 1x Top-12 WC 24/25)
+    # (Ski Cross)
+    - criterion_id: "freestyle_skiing_r6_5"
+      description: "Women, 1x Top-12 WC 25/26 + 1x Top-12 WM 2025 or WC 24/25 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      gender: ["Women"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_5_c1"
+          description: "1x Top-12 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_5_c2"
+          description: "1x Top-12 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
+          count_at_least: 1
+
+    # Route 6.6: Men, 1x Top-20 WC 25/26 AND (1x Top-20 WM 2025 OR 1x Top-20 WC 24/25)
+    # (Ski Cross)
+    - criterion_id: "freestyle_skiing_r6_6"
+      description: "Men, 1x Top-20 WC 25/26 + 1x Top-20 WM 2025 or WC 24/25 (Ski Cross)"
+      discipline: ["Ski Cross"]
+      gender: ["Men"]
+      priority: 2
+      conditions:
+        - condition_id: "freestyle_skiing_r6_6_c1"
+          description: "1x Top-20 WC 25/26"
+          competition: ["FIS Freeski World Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
+        - condition_id: "freestyle_skiing_r6_6_c2"
+          description: "1x Top-20 WM 2025 or WC 24/25"
+          competition: ["FIS Freestyle World Ski Championships", "FIS Freeski World Cup"]
+          date: ["2024-07-01", "2025-06-20"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
