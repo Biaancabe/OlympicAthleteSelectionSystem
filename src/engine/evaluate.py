@@ -108,3 +108,30 @@ def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
         "status": status,
         "conditions": condition_results,
     }
+
+
+# evaluate an athlete against all criteria (routes) of a sport.
+# Routes are joined by OR (any one route qualifies). The best status wins.
+def evaluate_athlete(athlete_results, criteria, tolerance=0.2):
+    # evaluate each criterion (route)
+    criterion_results = [
+        evaluate_criterion(athlete_results, crit, tolerance)
+        for crit in criteria
+    ]
+
+    statuses = [c["status"] for c in criterion_results]
+
+    # decide the final category (OR-logic: the best route drives it)
+    if "met" in statuses:
+        category = "fully_qualified"
+    elif "nearly_met" in statuses:
+        category = "nearly_qualified"
+    elif "manual_review" in statuses:
+        category = "manual_review_required"
+    else:
+        category = "not_qualified"
+
+    return {
+        "category": category,
+        "criteria": criterion_results,
+    }
