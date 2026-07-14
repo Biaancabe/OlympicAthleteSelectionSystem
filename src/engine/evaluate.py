@@ -79,3 +79,32 @@ def decide_condition_status(n_full, n_near, n_review, needed):
 
     # 4) otherwise clearly not met
     return "not_met"
+
+# evaluate one criterion (a route) for an athlete.
+# A criterion has several conditions joined by AND (all must hold).
+def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
+    # evaluate each condition
+    condition_results = [
+        evaluate_condition(athlete_results, cond, tolerance)
+        for cond in criterion["conditions"]
+    ]
+
+    statuses = [c["status"] for c in condition_results]
+
+    # decide the criterion status (AND-logic: the weakest condition drives it)
+    if "not_met" in statuses:
+        status = "not_met"
+    elif "manual_review" in statuses:
+        status = "manual_review"
+    elif all(s == "met" for s in statuses):
+        status = "met"
+    else:
+        status = "nearly_met"
+
+    return {
+        "criterion_id": criterion["criterion_id"],
+        "description": criterion["description"],
+        "priority": criterion["priority"],
+        "status": status,
+        "conditions": condition_results,
+    }
