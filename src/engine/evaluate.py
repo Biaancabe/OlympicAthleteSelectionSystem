@@ -42,9 +42,15 @@ def evaluate_condition(athlete_results, condition, tolerance=0.2):
         value = row[column]
         status = row[status_column]
 
-        # a status code (DNF/DNQ/DNS/DSQ) means no usable number here
+        # a status code (DNF/DNQ/DNS/DSQ) is a KNOWN non-result: the athlete
+        # did not achieve a placement here. That is a fact, not missing
+        # information -> it simply is not a hit, no manual review needed.
         if status is not None and pd.notna(status):
-            review_flags.append({"date": row["Date"], "status": status})
+            continue
+
+        # no value AND no status code -> genuinely unknown -> manual review
+        if value is None or pd.isna(value):
+            review_flags.append({"date": row["Date"], "reason": "missing value"})
             continue
 
         if satisfies(value, operator, perf.get("value"), perf.get("min"), perf.get("max")):

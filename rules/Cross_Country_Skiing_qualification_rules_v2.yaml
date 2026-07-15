@@ -11,7 +11,7 @@ version: "1.0"
 
 rule_tree:
   description: "Qualification Criteria for Cross Country Skiing at Olympic Games 2026"
-  sport: "Cross Country Skiing"
+  sport: "Cross-Country Skiing"
 
   # main criterias for group 1 athletes
   criteria:

@@ -53,8 +53,22 @@ def test_condition_nearly_met_one_full_one_near():
     assert res["status"] == "nearly_met"
 
 
-def test_condition_manual_review_status_code():
-    # one full hit + one DNS: could tip over the threshold if she had finished -> manual review
+def test_condition_manual_review_missing_value():
+    # one full hit + one result with NO rank and NO status code:
+    # genuinely unknown -> could tip over the threshold -> manual review
+    results = make_results([
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
+         "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-15",
+         "Rank_num": None, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_condition(results, TOP8_WC)
+    assert res["status"] == "manual_review"
+
+
+def test_condition_status_code_is_not_a_hit():
+    # a DNS is a KNOWN non-result, not missing data:
+    # one full hit + one DNS, 2 needed -> not met (no manual review)
     results = make_results([
         {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
          "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
@@ -62,7 +76,7 @@ def test_condition_manual_review_status_code():
          "Rank_num": None, "Rank_Status": "DNS", "Result_num": None, "Result_Status": None},
     ])
     res = evaluate_condition(results, TOP8_WC)
-    assert res["status"] == "manual_review"
+    assert res["status"] == "not_met"
 
 
 # a criterion with two conditions (AND): both must hold
@@ -104,13 +118,14 @@ def test_criterion_met_both_conditions():
 
 
 def test_criterion_not_met_overrides_manual_review():
-    # WM condition clearly not met (rank 20), WC condition manual_review (DNS)
-    # -> not_met wins over manual_review (your own rule)
+    # WM condition clearly not met (rank 20), WC condition manual_review
+    # (result with no rank and no status -> genuinely unknown)
+    # -> not_met wins over manual_review (AND-logic)
     results = make_results([
         {"Comp.SetDetail": "Test WM", "Date": "2025-02-15",
          "Rank_num": 20, "Rank_Status": None, "Result_num": None, "Result_Status": None},
         {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
-         "Rank_num": None, "Rank_Status": "DNS", "Result_num": None, "Result_Status": None},
+         "Rank_num": None, "Rank_Status": None, "Result_num": None, "Result_Status": None},
     ])
     res = evaluate_criterion(results, TWO_COND_CRITERION)
     assert res["status"] == "not_met"
@@ -161,13 +176,13 @@ def test_athlete_fully_qualified_one_route_met():
 
 
 def test_athlete_manual_review_beats_not_qualified():
-    # route 1 not met (rank 20), route 2 manual_review (DNS at WC)
-    # -> no met route, but a data gap could still qualify -> manual review
+    # route 1 not met (rank 20), route 2 has a result with no rank and no status
+    # -> no met route, but genuinely missing data could still qualify -> manual review
     results = make_results([
         {"Comp.SetDetail": "Test WM", "Date": "2025-02-15",
          "Rank_num": 20, "Rank_Status": None, "Result_num": None, "Result_Status": None},
         {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
-         "Rank_num": None, "Rank_Status": "DNS", "Result_num": None, "Result_Status": None},
+         "Rank_num": None, "Rank_Status": None, "Result_num": None, "Result_Status": None},
     ])
     res = evaluate_athlete(results, TWO_CRITERIA)
     assert res["category"] == "manual_review_required"

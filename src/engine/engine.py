@@ -39,7 +39,9 @@ def run_engine(data, rules_path, schema_path, tolerance=0.2):
     criteria = rules["rule_tree"]["criteria"]
 
     # 2) filter the data to this sport
-    sport_data = data[data["Sport"] == sport]
+    # compare the sport name case-insensitively, same reasoning as for
+    # competition and discipline names
+    sport_data = data[data["Sport"].str.lower() == sport.lower()]
 
     # 3) evaluate each athlete
     results = []
