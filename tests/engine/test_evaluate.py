@@ -171,3 +171,40 @@ def test_athlete_manual_review_beats_not_qualified():
     ])
     res = evaluate_athlete(results, TWO_CRITERIA)
     assert res["category"] == "manual_review_required"
+
+
+# a criterion restricted to one discipline
+HALFPIPE_CRITERION = {
+    "criterion_id": "test_hp",
+    "description": "Top-8 WC Halfpipe",
+    "priority": 1,
+    "discipline": ["Halfpipe"],
+    "conditions": [{
+        "condition_id": "test_hp_c1",
+        "description": "Top-8 WC",
+        "competition": ["Test World Cup"],
+        "date": ["2025-11-01", "2026-01-18"],
+        "performance": {"metric": "rank", "operator": "between", "min": 1, "max": 8},
+        "count_at_least": 1,
+    }],
+}
+
+
+def test_criterion_ignores_other_disciplines():
+    # a Top-8 result in Big Air must NOT count for a Halfpipe criterion
+    results = make_results([
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01", "Discipline": "Big Air",
+         "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, HALFPIPE_CRITERION)
+    assert res["status"] == "not_met"
+
+
+def test_criterion_counts_matching_discipline():
+    # the same result, but in Halfpipe -> counts
+    results = make_results([
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01", "Discipline": "Halfpipe",
+         "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, HALFPIPE_CRITERION)
+    assert res["status"] == "met"

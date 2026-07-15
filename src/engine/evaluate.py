@@ -83,9 +83,16 @@ def decide_condition_status(n_full, n_near, n_review, needed):
 # evaluate one criterion (a route) for an athlete.
 # A criterion has several conditions joined by AND (all must hold).
 def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
-    # evaluate each condition
+    # a criterion may be restricted to certain disciplines -> filter the data first
+    disciplines = criterion.get("discipline")
+    if disciplines:
+        relevant_results = athlete_results[athlete_results["Discipline"].isin(disciplines)]
+    else:
+        relevant_results = athlete_results
+
+    # evaluate each condition on the (possibly discipline-filtered) results
     condition_results = [
-        evaluate_condition(athlete_results, cond, tolerance)
+        evaluate_condition(relevant_results, cond, tolerance)
         for cond in criterion["conditions"]
     ]
 
@@ -113,10 +120,17 @@ def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
 # evaluate an athlete against all criteria (routes) of a sport.
 # Routes are joined by OR (any one route qualifies). The best status wins.
 def evaluate_athlete(athlete_results, criteria, tolerance=0.2):
-    # evaluate each criterion (route)
+    # determine the athlete's gender from their data (consistent across rows)
+    athlete_gender = None
+    if "Gender" in athlete_results.columns and len(athlete_results) > 0:
+        athlete_gender = athlete_results["Gender"].iloc[0]
+
+    # only evaluate criteria that apply to this athlete
+    applicable = [c for c in criteria if criterion_applies(c, athlete_gender)]
+
     criterion_results = [
         evaluate_criterion(athlete_results, crit, tolerance)
-        for crit in criteria
+        for crit in applicable
     ]
 
     statuses = [c["status"] for c in criterion_results]
@@ -135,3 +149,13 @@ def evaluate_athlete(athlete_results, criteria, tolerance=0.2):
         "category": category,
         "criteria": criterion_results,
     }
+
+
+# check whether a criterion applies to an athlete, based on gender.
+# A criterion without a "gender" field applies to everyone.
+def criterion_applies(criterion, athlete_gender):
+    genders = criterion.get("gender")
+    if not genders:
+        # no gender restriction -> applies to everyone
+        return True
+    return athlete_gender in genders
