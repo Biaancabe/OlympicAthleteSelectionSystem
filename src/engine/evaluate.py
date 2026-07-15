@@ -16,10 +16,13 @@ def evaluate_condition(athlete_results, condition, tolerance=0.2):
     # 1) filter to the condition's competitions and date range
     comps = condition["competition"]
     start, end = condition["date"]
+    # compare competition names case-insensitively: a difference in casing
+    # is never a meaningful difference (e.g. "VISA ..." vs "Visa ...")
+    comps_lower = [c.lower() for c in comps]
     mask = (
-        athlete_results["Comp.SetDetail"].isin(comps)
-        & (athlete_results["Date"] >= start)
-        & (athlete_results["Date"] <= end)
+            athlete_results["Comp.SetDetail"].str.lower().isin(comps_lower)
+            & (athlete_results["Date"] >= start)
+            & (athlete_results["Date"] <= end)
     )
     relevant = athlete_results[mask]
 
@@ -86,7 +89,11 @@ def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
     # a criterion may be restricted to certain disciplines -> filter the data first
     disciplines = criterion.get("discipline")
     if disciplines:
-        relevant_results = athlete_results[athlete_results["Discipline"].isin(disciplines)]
+        # compare discipline names case-insensitively, same reasoning as for competitions
+        disciplines_lower = [d.lower() for d in disciplines]
+        relevant_results = athlete_results[
+            athlete_results["Discipline"].str.lower().isin(disciplines_lower)
+        ]
     else:
         relevant_results = athlete_results
 
