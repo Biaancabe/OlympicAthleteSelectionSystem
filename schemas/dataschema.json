@@ -49,6 +49,13 @@
                     "null"
                 ]
             },
+            "Nationality": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "description": "Sporting nationality (NOC code, e.g. SUI); null for team/relay entries or when missing"
+            },
             "DoB": {
                 "type": [
                     "string",

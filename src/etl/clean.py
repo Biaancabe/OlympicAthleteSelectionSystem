@@ -126,3 +126,14 @@ def clean_data(data, schema):
     cleaned = cleaned[valid_columns].copy()
 
     return cleaned, clean_log
+
+# split a cleaned dataset into eligible rows and excluded (known non-SUI) rows.
+# Only a KNOWN nationality other than the home NOC is a reason to exclude. A
+# missing nationality (team/relay entries, or an individual whose value happens
+# to be empty in the source) is NOT positive evidence of ineligibility, so those
+# rows are kept (constitution Principle 3: no silent, data-driven exclusion).
+def exclude_non_sui(data, home="SUI"):
+    non_home_mask = data["Nationality"].notna() & (data["Nationality"] != home)
+    kept = data[~non_home_mask].copy()
+    excluded = data[non_home_mask].copy()
+    return kept, excluded

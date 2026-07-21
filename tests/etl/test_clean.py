@@ -1,5 +1,7 @@
 # import the function we want to test
 from src.etl.clean import clean_rank, clean_result, clean_date, clean_olympic
+import pandas as pd
+from src.etl.clean import exclude_non_sui
 
 
 # test 1: a normal placement (e.g. rank 5)
@@ -110,3 +112,40 @@ def test_clean_olympic_missing():
 # test: a missing value (None) -> None
 def test_clean_olympic_none():
     assert clean_olympic(None) is None
+
+
+# helper: build a tiny cleaned-style DataFrame from a list of nationality values
+def _nat_df(nationalities):
+    return pd.DataFrame({
+        "Person/Team": [f"Athlete {i}" for i in range(len(nationalities))],
+        "Nationality": nationalities,
+    })
+
+
+# test: a known non-SUI nationality (e.g. BRA) is excluded
+def test_exclude_non_sui_drops_known_foreign():
+    kept, excluded = exclude_non_sui(_nat_df(["BRA"]))
+    assert len(kept) == 0
+    assert len(excluded) == 1
+    assert excluded["Nationality"].tolist() == ["BRA"]
+
+
+# test: a SUI athlete is kept
+def test_exclude_non_sui_keeps_sui():
+    kept, excluded = exclude_non_sui(_nat_df(["SUI"]))
+    assert len(kept) == 1
+    assert len(excluded) == 0
+
+
+# test: a missing nationality (team/relay or missing value) is kept, not guessed away
+def test_exclude_non_sui_keeps_missing():
+    kept, excluded = exclude_non_sui(_nat_df([None]))
+    assert len(kept) == 1
+    assert len(excluded) == 0
+
+
+# test: a mixed set -> only the known non-SUI row leaves, SUI and null stay
+def test_exclude_non_sui_mixed():
+    kept, excluded = exclude_non_sui(_nat_df(["SUI", "BRA", None, "SUI"]))
+    assert len(kept) == 3
+    assert excluded["Nationality"].tolist() == ["BRA"]
