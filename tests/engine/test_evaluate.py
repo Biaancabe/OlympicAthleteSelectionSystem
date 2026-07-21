@@ -223,3 +223,61 @@ def test_criterion_counts_matching_discipline():
     ])
     res = evaluate_criterion(results, HALFPIPE_CRITERION)
     assert res["status"] == "met"
+
+
+# --- age gate (birth-date cutoff) ---------------------------------------
+
+import pytest
+from src.engine.compare import satisfies_date
+
+# a condition that requires Top-8 at the WC AND a birth date on/after a cutoff
+AGE_GATED = {
+    "condition_id": "age_c1",
+    "description": "Top-8 WC & born on/after 2001-02-07",
+    "competition": ["Test World Cup"],
+    "date": ["2025-11-01", "2026-01-18"],
+    "performance": {"metric": "rank", "operator": "between", "min": 1, "max": 8},
+    "age": {"metric": "birth_date", "operator": "on_or_after", "value": "2001-02-07"},
+    "count_at_least": 1,
+}
+
+
+def _one_top8():
+    # one qualifying Top-8 WC result (performance side is always satisfied)
+    return make_results([
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
+         "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+
+
+# satisfies_date: the pure comparison, incl. the boundary day and unknown case
+def test_satisfies_date_on_cutoff_counts():
+    # born exactly on the cutoff -> on_or_after is inclusive -> True
+    assert satisfies_date("2001-02-07", "on_or_after", "2001-02-07") is True
+
+def test_satisfies_date_day_after_counts():
+    assert satisfies_date("2001-02-08", "on_or_after", "2001-02-07") is True
+
+def test_satisfies_date_day_before_fails():
+    assert satisfies_date("2001-02-06", "on_or_after", "2001-02-07") is False
+
+def test_satisfies_date_missing_dob_is_unknown():
+    # unknown birth date -> None (undecidable), NOT False
+    assert satisfies_date(None, "on_or_after", "2001-02-07") is None
+
+
+# age gate inside evaluate_condition
+def test_condition_age_ok_falls_through_to_performance():
+    # young enough (born on cutoff) + a Top-8 result -> met
+    res = evaluate_condition(_one_top8(), AGE_GATED, dob="2001-02-07")
+    assert res["status"] == "met"
+
+def test_condition_age_too_old_is_not_met():
+    # born before the cutoff -> ineligible -> not_met, even with a Top-8 result
+    res = evaluate_condition(_one_top8(), AGE_GATED, dob="2000-12-31")
+    assert res["status"] == "not_met"
+
+def test_condition_age_unknown_is_manual_review():
+    # no birth date -> eligibility undecidable -> manual_review, not a silent pass
+    res = evaluate_condition(_one_top8(), AGE_GATED, dob=None)
+    assert res["status"] == "manual_review"

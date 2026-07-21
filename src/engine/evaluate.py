@@ -1,6 +1,5 @@
 import pandas as pd
-from src.engine.compare import satisfies, is_near
-
+from src.engine.compare import satisfies, is_near, satisfies_date
 
 # map a metric name to the cleaned data column it refers to
 def metric_column(metric):
@@ -12,7 +11,32 @@ def metric_column(metric):
         raise ValueError(f"Unknown metric: {metric}")
 
 # evaluate a single condition for one athlete's results
-def evaluate_condition(athlete_results, condition, tolerance=0.2):
+def evaluate_condition(athlete_results, condition, dob=None, tolerance=0.2):
+    # 0) age gate (athlete-level eligibility, checked before looking at results).
+    #    A birth-date cutoff is a hard eligibility bound, not a performance
+    #    threshold -> no tolerance. Checked once; a failed gate makes the whole
+    #    condition unsatisfiable regardless of results.
+    age = condition.get("age")
+    if age is not None:
+        age_ok = satisfies_date(dob, age["operator"], age["value"])
+        if age_ok is None:
+            # birth date unknown -> eligibility not decidable -> manual review
+            return {
+                "condition_id": condition["condition_id"],
+                "status": "manual_review",
+                "full_hits": [],
+                "near_hits": [],
+                "review_flags": [{"reason": "missing date of birth for age criterion"}],
+            }
+        if not age_ok:
+            # outside the age window -> this condition cannot be satisfied
+            return {
+                "condition_id": condition["condition_id"],
+                "status": "not_met",
+                "full_hits": [],
+                "near_hits": [],
+                "review_flags": [],
+            }
     # 1) filter to the condition's competitions and date range
     comps = condition["competition"]
     start, end = condition["date"]
@@ -91,7 +115,7 @@ def decide_condition_status(n_full, n_near, n_review, needed):
 
 # evaluate one criterion (a route) for an athlete.
 # A criterion has several conditions joined by AND (all must hold).
-def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
+def evaluate_criterion(athlete_results, criterion, dob=None, tolerance=0.2):
     # a criterion may be restricted to certain disciplines -> filter the data first
     disciplines = criterion.get("discipline")
     if disciplines:
@@ -105,7 +129,7 @@ def evaluate_criterion(athlete_results, criterion, tolerance=0.2):
 
     # evaluate each condition on the (possibly discipline-filtered) results
     condition_results = [
-        evaluate_condition(relevant_results, cond, tolerance)
+        evaluate_condition(relevant_results, cond, dob, tolerance)
         for cond in criterion["conditions"]
     ]
 
@@ -138,11 +162,16 @@ def evaluate_athlete(athlete_results, criteria, tolerance=0.2):
     if "Gender" in athlete_results.columns and len(athlete_results) > 0:
         athlete_gender = athlete_results["Gender"].iloc[0]
 
+    # the birth date is athlete-level (consistent across rows) -> read once
+    dob = None
+    if "DoB" in athlete_results.columns and len(athlete_results) > 0:
+        dob = athlete_results["DoB"].iloc[0]
+
     # only evaluate criteria that apply to this athlete
     applicable = [c for c in criteria if criterion_applies(c, athlete_gender)]
 
     criterion_results = [
-        evaluate_criterion(athlete_results, crit, tolerance)
+        evaluate_criterion(athlete_results, crit, dob, tolerance)
         for crit in applicable
     ]
 

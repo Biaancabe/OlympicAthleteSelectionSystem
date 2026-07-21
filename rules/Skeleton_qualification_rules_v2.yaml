@@ -109,8 +109,8 @@ rule_tree:
             operator: between
             min: 1
             max: 20
-          age:                                         # age next to performance, not after count_at_least
-            metric: age
-            operator: less_or_equal
-            value: 24
+          age: # age next to performance, not after count_at_least
+            metric: birth_date
+            operator: on_or_after
+            value: "2001-02-07"
           count_at_least: 2
