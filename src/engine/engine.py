@@ -31,7 +31,7 @@ def load_and_validate_rules(rules_path, schema_path):
 
 
 # run the selection engine for one sport's rule file against the data.
-def run_engine(data, rules_path, schema_path, tolerance=0.2):
+def run_engine(data, rules_path, schema_path):
     # 1) load + validate the rules (fails loudly if invalid)
     rules = load_and_validate_rules(rules_path, schema_path)
 
@@ -47,7 +47,7 @@ def run_engine(data, rules_path, schema_path, tolerance=0.2):
     results = []
     for name in sport_data["Person/Team"].unique():
         athlete_results = sport_data[sport_data["Person/Team"] == name]
-        evaluation = evaluate_athlete(athlete_results, criteria, tolerance)
+        evaluation = evaluate_athlete(athlete_results, criteria)
         results.append({
             "athlete": name,
             "category": evaluation["category"],

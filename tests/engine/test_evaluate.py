@@ -41,8 +41,9 @@ def test_condition_not_met_only_one_hit():
     assert res["status"] == "not_met"
 
 
-def test_condition_nearly_met_one_full_one_near():
-    # one full hit (rank 5) + one near hit (rank 9, within 20% of 8) -> nearly met
+def test_condition_one_full_one_miss_is_not_met():
+    # one full hit (rank 5), one miss (rank 9): at condition level this is
+    # not_met. nearly_met is decided at criterion level, not here.
     results = make_results([
         {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
          "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
@@ -50,7 +51,7 @@ def test_condition_nearly_met_one_full_one_near():
          "Rank_num": 9, "Rank_Status": None, "Result_num": None, "Result_Status": None},
     ])
     res = evaluate_condition(results, TOP8_WC)
-    assert res["status"] == "nearly_met"
+    assert res["status"] == "not_met"
 
 
 def test_condition_manual_review_missing_value():
@@ -117,10 +118,10 @@ def test_criterion_met_both_conditions():
     assert res["status"] == "met"
 
 
-def test_criterion_not_met_overrides_manual_review():
-    # WM condition clearly not met (rank 20), WC condition manual_review
-    # (result with no rank and no status -> genuinely unknown)
-    # -> not_met wins over manual_review (AND-logic)
+def test_criterion_manual_review_when_one_not_met_one_unknown():
+    # WM condition not met (rank 20), WC condition manual_review
+    # (result with no rank and no status -> genuinely unknown).
+    # manual_review propagates: the unknown result could affect the outcome.
     results = make_results([
         {"Comp.SetDetail": "Test WM", "Date": "2025-02-15",
          "Rank_num": 20, "Rank_Status": None, "Result_num": None, "Result_Status": None},
@@ -128,7 +129,7 @@ def test_criterion_not_met_overrides_manual_review():
          "Rank_num": None, "Rank_Status": None, "Result_num": None, "Result_Status": None},
     ])
     res = evaluate_criterion(results, TWO_COND_CRITERION)
-    assert res["status"] == "not_met"
+    assert res["status"] == "manual_review"
 
 
 # two criteria (routes) joined by OR: any one qualifies
@@ -281,3 +282,81 @@ def test_condition_age_unknown_is_manual_review():
     # no birth date -> eligibility undecidable -> manual_review, not a silent pass
     res = evaluate_condition(_one_top8(), AGE_GATED, dob=None)
     assert res["status"] == "manual_review"
+
+# --- nearly_met at criterion level -----------------------------------------
+
+# a two-condition criterion: WM + WC both needed
+TWO_PERF_CRITERION = {
+    "criterion_id": "test_2perf",
+    "description": "WM + WC route",
+    "priority": 1,
+    "conditions": [
+        {
+            "condition_id": "c_wm",
+            "description": "Top-5 WM",
+            "competition": ["Test WM"],
+            "date": ["2025-01-01", "2026-01-18"],
+            "performance": {"metric": "rank", "operator": "between", "min": 1, "max": 5},
+            "count_at_least": 1,
+        },
+        {
+            "condition_id": "c_wc",
+            "description": "Top-8 WC",
+            "competition": ["Test World Cup"],
+            "date": ["2025-11-01", "2026-01-18"],
+            "performance": {"metric": "rank", "operator": "between", "min": 1, "max": 8},
+            "count_at_least": 1,
+        },
+    ],
+}
+
+
+def test_criterion_nearly_met_one_perf_met_one_not_met():
+    # WM met (rank 3), WC not met (rank 12) -> criterion is nearly_met
+    results = make_results([
+        {"Comp.SetDetail": "Test WM", "Date": "2025-02-15",
+         "Rank_num": 3, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
+         "Rank_num": 12, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, TWO_PERF_CRITERION)
+    assert res["status"] == "nearly_met"
+
+
+def test_criterion_not_met_both_perf_not_met():
+    # both conditions not met -> not nearly_met, simply not_met
+    results = make_results([
+        {"Comp.SetDetail": "Test WM", "Date": "2025-02-15",
+         "Rank_num": 10, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
+         "Rank_num": 12, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, TWO_PERF_CRITERION)
+    assert res["status"] == "not_met"
+
+
+def test_criterion_single_perf_cond_has_no_nearly_met():
+    # a criterion with only one performance condition cannot be nearly_met
+    single_cond_crit = {
+        "criterion_id": "test_single",
+        "description": "single cond",
+        "priority": 1,
+        "conditions": [
+            {
+                "condition_id": "c1",
+                "description": "Top-8 WC",
+                "competition": ["Test World Cup"],
+                "date": ["2025-11-01", "2026-01-18"],
+                "performance": {"metric": "rank", "operator": "between", "min": 1, "max": 8},
+                "count_at_least": 2,
+            }
+        ],
+    }
+    results = make_results([
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-01",
+         "Rank_num": 5, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+        {"Comp.SetDetail": "Test World Cup", "Date": "2025-12-15",
+         "Rank_num": 12, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, single_cond_crit)
+    assert res["status"] == "not_met"
