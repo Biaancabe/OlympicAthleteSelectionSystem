@@ -5,21 +5,19 @@ from src.etl.validate import validate_data
 import os
 
 
-def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_dir="output"):
-    # 1) load raw data + schema
-    data = load_data(data_path, sep=sep, source=source)
+# process an already-loaded raw DataFrame: clean, exclude non-SUI, dedup,
+# validate and save. This is the shared core; both the file-based entry point
+# and the dashboard (which concatenates the export with manual entries before
+# cleaning) go through here, so cleaning and validation stay identical for
+# every source.
+def run_pipeline_on_frame(data, schema_path, output_dir="output"):
     schema = load_json_schema(schema_path)
     item_schema = schema.get("items", schema)
 
-    # 2) clean
+    # 1) clean
     cleaned, clean_log = clean_data(data, item_schema)
 
-    # 2a) exclude athletes not eligible to start for Switzerland.
-    #     Only rows with a KNOWN non-SUI nationality are dropped. Rows with an
-    #     empty Nationality (team/relay entries, or the occasional individual
-    #     with a missing value) are left in place -> no silent, data-driven
-    #     exclusion (constitution Principle 3); team handling is a separate,
-    #     still-open question.
+    # 2) exclude athletes not eligible to start for Switzerland (known non-SUI).
     cleaned, excluded = exclude_non_sui(cleaned)
     print(f"run_pipeline: excluded {len(excluded)} non-SUI rows "
           f"({excluded['Person/Team'].nunique()} athletes)")
@@ -30,7 +28,8 @@ def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_d
         .to_dict("records")
     )
 
-    # 2b) remove exact duplicate results (idempotency)
+    # 3) remove exact duplicate results. source is part of the key, so a manual
+    #    entry and a Podium row are kept as distinct records on purpose.
     key_cols = ['source', 'Date', 'Person/Team', 'Comp.SetDetail',
                 'Discipline', 'Class', 'Gender']
     rows_before_dedup = len(cleaned)
@@ -40,10 +39,8 @@ def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_d
           f"({rows_before_dedup} -> {len(cleaned)})")
     clean_log["duplicates_removed"] = duplicates_removed
 
-    # 3) validate the cleaned data
+    # 4) validate the cleaned data
     report = validate_data(cleaned, schema)
-
-    # 4) merge the cleaning info into the report
     report["cleaning"] = clean_log
 
     # 5) save the cleaned data to disk (semicolon-separated for robustness)
@@ -53,5 +50,11 @@ def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_d
     report["output_path"] = output_path
     print(f"run_pipeline: saved cleaned data to {output_path}")
 
-    # 6) return both the cleaned data and the combined report
     return cleaned, report
+
+
+# file-based entry point: load one raw CSV, then run the shared core.
+# Behaviour is unchanged from before the split.
+def run_pipeline(data_path, schema_path, source="podium_csv", sep=None, output_dir="output"):
+    data = load_data(data_path, sep=sep, source=source)
+    return run_pipeline_on_frame(data, schema_path, output_dir=output_dir)
