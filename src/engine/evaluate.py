@@ -13,7 +13,7 @@ def metric_column(metric):
 
 
 # evaluate a single condition for one athlete's results
-def evaluate_condition(athlete_results, condition, dob=None):
+def evaluate_condition(athlete_results, condition, dob=None, aliases=None):
     # 0) age gate (athlete-level eligibility, checked before looking at results).
     #    A birth-date cutoff is a hard eligibility bound, not a performance
     #    threshold -> no tolerance. Checked once; a failed gate makes the whole
@@ -40,8 +40,15 @@ def evaluate_condition(athlete_results, condition, dob=None):
     comps = condition["competition"]
     start, end = condition["date"]
     comps_lower = [c.lower() for c in comps]
+    # extend the accepted names with any data-side aliases for these rule
+    # names, so a differently spelled name for the SAME competition still
+    # matches. The comparison itself stays exact (see competition_aliases.yaml).
+    accepted = set(comps_lower)
+    if aliases:
+        for name in comps_lower:
+            accepted.update(aliases.get(name, []))
     mask = (
-            athlete_results["Comp.SetDetail"].str.lower().isin(comps_lower)
+            athlete_results["Comp.SetDetail"].str.lower().isin(accepted)
             & (athlete_results["Date"] >= start)
             & (athlete_results["Date"] <= end)
     )
@@ -101,7 +108,7 @@ def decide_condition_status(n_full, n_review, needed):
 
 # evaluate one criterion (a route) for an athlete.
 # A criterion has several conditions joined by AND (all must hold).
-def evaluate_criterion(athlete_results, criterion, dob=None):
+def evaluate_criterion(athlete_results, criterion, dob=None, aliases=None):
     # a criterion may be restricted to certain disciplines -> filter first
     disciplines = criterion.get("discipline")
     if disciplines:
@@ -113,7 +120,7 @@ def evaluate_criterion(athlete_results, criterion, dob=None):
         relevant_results = athlete_results
 
     condition_results = [
-        evaluate_condition(relevant_results, cond, dob)
+        evaluate_condition(relevant_results, cond, dob, aliases)
         for cond in criterion["conditions"]
     ]
 
@@ -154,7 +161,7 @@ def evaluate_criterion(athlete_results, criterion, dob=None):
 
 # evaluate an athlete against all criteria (routes) of a sport.
 # Routes are joined by OR (any one route qualifies). The best status wins.
-def evaluate_athlete(athlete_results, criteria):
+def evaluate_athlete(athlete_results, criteria, aliases=None):
     athlete_gender = None
     if "Gender" in athlete_results.columns and len(athlete_results) > 0:
         athlete_gender = athlete_results["Gender"].iloc[0]
@@ -167,7 +174,7 @@ def evaluate_athlete(athlete_results, criteria):
     applicable = [c for c in criteria if criterion_applies(c, athlete_gender)]
 
     criterion_results = [
-        evaluate_criterion(athlete_results, crit, dob)
+        evaluate_criterion(athlete_results, crit, dob, aliases)
         for crit in applicable
     ]
 

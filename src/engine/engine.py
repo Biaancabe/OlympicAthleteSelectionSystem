@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from jsonschema import Draft7Validator
 
-from src.etl.load import load_yaml_rules, load_json_schema
+from src.etl.load import load_yaml_rules, load_json_schema, load_yaml_aliases
 from src.engine.evaluate import evaluate_athlete
 
 import re
@@ -53,8 +53,41 @@ def load_and_validate_rules(rules_path, schema_path):
     return rules
 
 
+# load the competition-alias file and validate it against its schema.
+# Fails loudly if the file is invalid, same reasoning as for the rules.
+def load_and_validate_aliases(aliases_path, schema_path):
+    aliases = load_yaml_aliases(aliases_path)
+    schema = load_json_schema(schema_path)
+
+    validator = Draft7Validator(schema)
+    errors = sorted(validator.iter_errors(aliases), key=lambda e: str(e.path))
+    if errors:
+        messages = []
+        for err in errors:
+            path = ".".join(str(p) for p in err.path) or "root"
+            messages.append(f"  - {path}: {err.message}")
+        raise ValueError(
+            f"Alias file '{aliases_path}' failed schema validation:\n"
+            + "\n".join(messages)
+        )
+    return aliases
+
+
+# resolve the aliases for one sport into a lower-cased lookup:
+# {rule competition name -> [data competition name, ...]}. The comparison is
+# case-insensitive, so the names are lower-cased here once.
+def aliases_for_sport(aliases, sport):
+    if not aliases:
+        return {}
+    sport_map = aliases.get("aliases", {}).get(sport, {})
+    return {
+        rule_name.lower(): [data_name.lower() for data_name in data_names]
+        for rule_name, data_names in sport_map.items()
+    }
+
+
 # run the selection engine for one sport's rule file against the data.
-def run_engine(data, rules_path, schema_path):
+def run_engine(data, rules_path, schema_path, aliases_path=None, alias_schema_path=None):
     # 1) load + validate the rules (fails loudly if invalid)
     rules = load_and_validate_rules(rules_path, schema_path)
 
@@ -64,6 +97,13 @@ def run_engine(data, rules_path, schema_path):
     # is correct for all winter sports in the pilot (L. Castella, personal
     # communication, July 2026).
     team_handling = rules["rule_tree"].get("team_handling", "individual")
+
+    # 1a) resolve competition-name aliases for this sport (empty when no
+    #     alias file is given, so the behaviour is unchanged without one).
+    alias_map = {}
+    if aliases_path:
+        aliases = load_and_validate_aliases(aliases_path, alias_schema_path)
+        alias_map = aliases_for_sport(aliases, sport)
 
     # 2) filter the data to this sport
     # compare the sport name case-insensitively, same reasoning as for
@@ -77,7 +117,7 @@ def run_engine(data, rules_path, schema_path):
     results = []
     for name in units:
         athlete_results = sport_data[sport_data["Person/Team"] == name]
-        evaluation = evaluate_athlete(athlete_results, criteria)
+        evaluation = evaluate_athlete(athlete_results, criteria, aliases=alias_map)
         results.append({
             "athlete": name,
             "category": evaluation["category"],

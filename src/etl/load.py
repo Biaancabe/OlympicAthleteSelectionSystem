@@ -20,6 +20,11 @@ def load_yaml_rules(rules_path):
     with open(rules_path, 'r') as f:
         return yaml.safe_load(f)
 
+# loading the YAML competition-alias file
+def load_yaml_aliases(aliases_path):
+    with open(aliases_path, 'r') as f:
+        return yaml.safe_load(f)
+
 # manual single-result entry (e.g. via input form)
 # Deferred: depends on the input interface, which is tied to the still-open dashboard/GUI scope decision.
 # See specs/selection-engine.md.

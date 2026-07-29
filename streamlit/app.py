@@ -20,7 +20,9 @@ from src.etl.manual_entry import (
 
 DATA_SCHEMA = str(ROOT / "schemas" / "dataschema.json")
 RULE_SCHEMA = str(ROOT / "schemas" / "ruleschema.json")
+ALIAS_SCHEMA = str(ROOT / "schemas" / "aliasschema.json")
 RULES_DIR = ROOT / "rules"
+ALIAS_PATH = RULES_DIR / "competition_aliases.yaml"
 DATA_DIR = ROOT / "data"
 MANUAL_PATH = DATA_DIR / "manual_entries.csv"
 
@@ -70,7 +72,9 @@ with st.sidebar:
 
 manual_mtime = MANUAL_PATH.stat().st_mtime if MANUAL_PATH.exists() else None
 cleaned, report = load_cleaned(str(data_choice), manual_mtime)
-engine_output = run_engine(cleaned, sports[sport_choice], RULE_SCHEMA)
+aliases_path = str(ALIAS_PATH) if ALIAS_PATH.exists() else None
+engine_output = run_engine(cleaned, sports[sport_choice], RULE_SCHEMA,
+                           aliases_path=aliases_path, alias_schema_path=ALIAS_SCHEMA)
 selection = build_selection_list(engine_output)
 
 st.subheader(f"{sport_choice}: {len(selection)} athletes evaluated")

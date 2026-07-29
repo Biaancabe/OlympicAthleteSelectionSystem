@@ -1,0 +1,21 @@
+# Competition name aliases.
+#
+# Maps a competition name as written in a rule file to the name(s) the SAME
+# competition carries in the Podium / Gracenote data. This exists because the
+# federation criteria and the data platform sometimes label the identical event
+# differently (for example an abbreviation like "U23" vs "Under 23").
+#
+# Only genuine same-event equivalences belong here. Two rules must be respected:
+#   - a competition that is genuinely a DIFFERENT event must NOT be listed here,
+#     even if the names share words (e.g. "IBU Cup" is not "BMW IBU World Cup").
+#   - a competition that is simply absent from an export is not an alias case;
+#     the correct outcome there is no match, not a forced one.
+#
+# The version is independent of the rule-file versions: a relabelling by the
+# data platform changes this file, not the selection criteria.
+version: 1
+
+aliases:
+  Cross-Country Skiing:
+    "FIS Nordic U23 World Ski Championships":
+      - "FIS Nordic Under 23 World Ski Championships"
