@@ -41,7 +41,9 @@ def clean_result(value):
 
     # 3) a real performance value -> numeric result, no special status
     try:
-        cleaned = str(value).replace("'", "")   # remove Swiss thousands separator
+        cleaned = str(value).strip()
+        cleaned = cleaned.replace(" ", "").replace("'", "")  # drop thousands separators (space, apostrophe)
+        cleaned = cleaned.replace(",", ".")  # comma decimal -> dot
         return float(cleaned), None
     except (ValueError, TypeError):
         return None, None
@@ -110,7 +112,7 @@ def clean_data(data, schema):
     cleaned[["Rank_num", "Rank_Status"]] = cleaned["Rank"].apply(clean_rank).apply(pd.Series)
 
     # 4) result -> Result_num + Result_Status
-    cleaned[["Result_num", "Result_Status"]] = cleaned["Sec/Mtr/Pts"].apply(clean_result).apply(pd.Series)
+    cleaned[["Result_num", "Result_Status"]] = cleaned["Result"].apply(clean_result).apply(pd.Series)
 
     # 5) DoB -> ISO date
     cleaned["DoB"] = cleaned["DoB"].apply(clean_date)

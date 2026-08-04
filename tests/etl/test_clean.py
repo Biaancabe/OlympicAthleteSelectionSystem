@@ -46,7 +46,12 @@ def test_clean_result_points():
 # test: a time value with decimals, coming in as text
 def test_clean_result_time_with_comma():
     # "78.77" becomes the float 78.77, no status
-    assert clean_result("78.77") == (78.77, None)
+    assert clean_result("78,77") == (78.77, None)
+
+
+def test_clean_result_space_thousands():
+    # "2 501" -> space removed -> 2501.0, no status
+    assert clean_result("2 501") == (2501.0, None)
 
 
 # test: a value with the Swiss thousands separator (apostrophe)
