@@ -25,9 +25,9 @@ rule_tree:
             max: 8
           count_at_least: 2
 
-    # Route 2: Top-8 WM 2025 (1x) AND Top-6 WC 2025/26 (1x)
+    # Route 2: Top-8 WM 2025 (1x) AND Top-8 WC 2025/26 (1x)
     - criterion_id: "skeleton_r2"
-      description: "Top-8 WM 2025 & Top-6 WC 2025/26"
+      description: "Top-8 WM 2025 & Top-8 WC 2025/26"
       priority: 1
       conditions:
         # first condition: Top-8 at World Championships 2025
