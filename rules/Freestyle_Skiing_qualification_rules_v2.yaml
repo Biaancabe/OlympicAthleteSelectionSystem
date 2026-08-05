@@ -8,11 +8,9 @@ version: "1.0"
 # - A list in the "competition" field means OR (any one of the listed competitions counts).
 # - Ski Cross has a different World Cup time window than the other disciplines.
 #
-# OPEN QUESTION for Martin (Routes 2.1 / 2.2):
-# The original file had an invalid date range for "World Cup Standings 2024/25"
-# (end before start: ["2025-03-01", "2025-01-07"]). The source document specifies
-# only "Year: 2025" for these standings, so it is provisionally set to
-# ["2025-01-01", "2025-12-31"]. Confirm the correct standings window with Martin.
+# AGE/STANDINGS NOTE (Routes 2.1 / 2.2): "World Cup Standings 2024/25" uses the
+# 2024/25 season window (01.07.2024 - 30.06.2025, Gracenote cross-year season),
+# consistent with routes 6.x. All standings in the data fall Feb-Mar 2025.
 
 rule_tree:
   description: "Qualification Criteria for Freestyle Skiing at Olympic Games 2026"
@@ -83,7 +81,7 @@ rule_tree:
         - condition_id: "freestyle_skiing_r2_1_c1"
           description: "Top-3 WC Standings 24/25"
           competition: ["FIS Freeski World Cup standings"]
-          date: ["2025-01-01", "2025-12-31"]   # OPEN: provisional, see header note
+          date: ["2024-07-01", "2025-06-30"]
           performance:
             metric: rank
             operator: between
@@ -110,7 +108,7 @@ rule_tree:
         - condition_id: "freestyle_skiing_r2_2_c1"
           description: "Top-3 WC Standings 24/25"
           competition: ["FIS Freeski World Cup standings"]
-          date: ["2025-01-01", "2025-12-31"]   # OPEN: provisional, see header note
+          date: ["2024-07-01", "2025-06-30"]
           performance:
             metric: rank
             operator: between

@@ -9,10 +9,10 @@ version: "1.0"
 # - Snowboard Cross and Parallel Giant Slalom have a different World Cup time window
 #   than the park disciplines (Big Air, Halfpipe, Slopestyle).
 #
-# OPEN QUESTION for Martin (Routes 2.1 / 2.2):
-# The "World Cup Standings 2024/25" date range is only 4 days long
-# (["2025-01-03", "2025-01-07"]), which looks too short for a full-season standings.
-# Kept as in the original file, but should be confirmed with Martin.
+# STANDINGS NOTE (Routes 2.1 / 2.2): "World Cup Standings 2024/25" uses the
+# 2024/25 season window (01.07.2024 - 30.06.2025, Gracenote cross-year season),
+# consistent with routes 6.x. In the data the standings fall Feb-Apr 2025.
+# (Previously a 4-day window ["2025-01-03","2025-01-07"] that matched nothing.)
 
 rule_tree:
   description: "Qualification Criteria for Snowboard at Olympic Games 2026"
@@ -83,7 +83,7 @@ rule_tree:
         - condition_id: "snowboard_r2_1_c1"
           description: "Top-3 WC Standings 24/25"
           competition: ["VISA FIS Snowboard World Cup standings"]
-          date: ["2025-01-03", "2025-01-07"]   # OPEN: very short range, see header note
+          date: ["2024-07-01", "2025-06-30"]
           performance:
             metric: rank
             operator: between
@@ -110,7 +110,7 @@ rule_tree:
         - condition_id: "snowboard_r2_2_c1"
           description: "Top-3 WC Standings 24/25"
           competition: ["VISA FIS Snowboard World Cup standings"]
-          date: ["2025-01-03", "2025-01-07"]   # OPEN: very short range, see header note
+          date: ["2024-07-01", "2025-06-30"]
           performance:
             metric: rank
             operator: between
