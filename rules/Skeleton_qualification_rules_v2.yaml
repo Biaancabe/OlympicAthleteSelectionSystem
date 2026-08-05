@@ -50,7 +50,7 @@ rule_tree:
             metric: rank
             operator: between
             min: 1
-            max: 6
+            max: 8
           count_at_least: 1
 
     # Route 3: Top-8 EM 2025 (1x) AND Top-8 WC 2025/26 (1x)
@@ -61,7 +61,7 @@ rule_tree:
         - condition_id: "skeleton_r3_c1"
           description: "Top-8 EM 2025"
           competition: ["IBSF European Championships"]
-          date: ["2025-03-06", "2025-03-16"]
+          date: ["2025-02-03", "2025-02-09"]
           performance:
             metric: rank
             operator: between

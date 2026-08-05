@@ -10,9 +10,11 @@ version: "1.2"
 #   Switzerland is verified MANUALLY outside this YAML structure. It is not
 #   modelled here. In the results file, the Person/Team column contains the pilot's name.
 #
-# OPEN QUESTION for Lionel (age criterion, Route 5): reference date for age,
-# whether age must hold at each qualifying result or at a fixed cutoff, and
-# automatic vs. manual review. Same open question as for Skeleton Route 5.
+# AGE CRITERION (Route 5): resolved. "U26" from the concept is encoded as
+# born on/after 1998-02-07, i.e. age <= 27 at the Games opening (06.02.2026)
+# as a fixed birth-date cutoff, not per result. Consistent with Skeleton
+# (U23 -> <= 24, cutoff 2001-02-07). Open only: confirm wording with Lionel
+# that "U26" is indeed meant as "<= 27 at the Games".
 
 rule_tree:
   description: "Qualification Criteria for Bobsleigh at Olympic Games 2026"
