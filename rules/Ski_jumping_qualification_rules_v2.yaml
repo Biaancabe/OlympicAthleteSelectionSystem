@@ -1,24 +1,32 @@
 Description: "Ski Jumping Qualification Rules for Olympic Games 2026"
 created at: 2025-12-16
-updated at: 2025-12-16
-version: "1.0"
+updated at: 2026-01-22
+version: "1.1"
 
-# Structure notes:
-# - A list in the "competition" field means OR (any one of the listed competitions counts),
-#   e.g. World Cup OR Sommer Grand Prix.
-# - No class filter at rule_tree level (kept as in the original file).
+# Two parallel route sets, one per gender, because the men's and women's concepts differ:
+#   - selection end date: men 18.01.2026, women 25.01.2026
+#   - Ski Flying World Championships (r5/r6): men only
+#   - Continental Cup route (r8): men 'Continental Cup', women 'Inter-Continental Cup';
+#     both map to the single data name 'FIS Ski Jumping Continental Cup'.
+# Routes are filtered per gender via the 'gender' field.
+#
+# A list in 'competition' means OR. The World Cup appears in the data under two names,
+# the regular one and the Four Hills Tournament combined name; both are always listed.
+# All routes are group 1 main criteria (priority 1).
 
 rule_tree:
   description: "Qualification Criteria for Ski jumping at Olympic Games 2026"
   sport: "Ski jumping"
 
   criteria:
-    # Route 1: 1x Top-10 WM 2025 AND (1x Top-25 WC 25/26 OR SG 2025)
-    - criterion_id: "ski_jumping_r1"
-      description: "Top-10 WM 2025 + Top-25 WC 25/26 or SG 2025"
+    # ---------- MEN (selection end 18.01.2026) ----------
+    # Men, Top-10 WM 2025 + Top-25 WC/SG
+    - criterion_id: "ski_jumping_m_r1"
+      description: "Top-10 WM 2025 + Top-25 WC/SG"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r1_c1"
+        - condition_id: "ski_jumping_m_r1_c1"
           description: "Top-10 WM 2025"
           competition: ["FIS Nordic World Ski Championships"]
           date: ["2025-02-26", "2025-03-09"]
@@ -28,9 +36,9 @@ rule_tree:
             min: 1
             max: 10
           count_at_least: 1
-        - condition_id: "ski_jumping_r1_c2"
-          description: "Top-25 WC 25/26 or SG 2025"
-          competition: ["Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+        - condition_id: "ski_jumping_m_r1_c2"
+          description: "Top-25 WC/SG 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
           date: ["2025-07-15", "2026-01-18"]
           performance:
             metric: rank
@@ -39,24 +47,25 @@ rule_tree:
             max: 25
           count_at_least: 1
 
-    # Route 2: (1x Top-15 WC 24/25 OR SG 2024) AND 1x Top-25 WC 25/26
-    - criterion_id: "ski_jumping_r2"
-      description: "Top-15 WC 24/25 or SG 2024 + Top-25 WC 25/26"
+    # Men, Top-15 WC24/25 or SG + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_m_r2"
+      description: "Top-15 WC24/25 or SG + Top-25 WC 25/26"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r2_c1"
-          description: "Top-15 WC 24/25 or SG 2024"
-          competition: ["Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
-          date: ["2024-11-15", "2025-10-27"]
+        - condition_id: "ski_jumping_m_r2_c1"
+          description: "Top-15 WC 24/25 or SG"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+          date: ["2024-11-15", "2025-11-01"]
           performance:
             metric: rank
             operator: between
             min: 1
             max: 15
           count_at_least: 1
-        - condition_id: "ski_jumping_r2_c2"
+        - condition_id: "ski_jumping_m_r2_c2"
           description: "Top-25 WC 25/26"
-          competition: ["Viesmann FIS Ski Jumping World Cup"]
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
           date: ["2025-11-01", "2026-01-18"]
           performance:
             metric: rank
@@ -65,14 +74,15 @@ rule_tree:
             max: 25
           count_at_least: 1
 
-    # Route 3: 1x Top-15 WC 25/26
-    - criterion_id: "ski_jumping_r3"
+    # Men, 1x Top-15 WC 25/26
+    - criterion_id: "ski_jumping_m_r3"
       description: "1x Top-15 WC 25/26"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r3_c1"
+        - condition_id: "ski_jumping_m_r3_c1"
           description: "1x Top-15 WC 25/26"
-          competition: ["Viesmann FIS Ski Jumping World Cup"]
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
           date: ["2025-11-01", "2026-01-18"]
           performance:
             metric: rank
@@ -81,14 +91,15 @@ rule_tree:
             max: 15
           count_at_least: 1
 
-    # Route 4: 2x Top-25 WC 25/26
-    - criterion_id: "ski_jumping_r4"
+    # Men, 2x Top-25 WC 25/26
+    - criterion_id: "ski_jumping_m_r4"
       description: "2x Top-25 WC 25/26"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r4_c1"
+        - condition_id: "ski_jumping_m_r4_c1"
           description: "2x Top-25 WC 25/26"
-          competition: ["Viesmann FIS Ski Jumping World Cup"]
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
           date: ["2025-11-01", "2026-01-18"]
           performance:
             metric: rank
@@ -97,15 +108,16 @@ rule_tree:
             max: 25
           count_at_least: 2
 
-    # Route 5: 1x Top-15 Ski Flying WM 2026
-    - criterion_id: "ski_jumping_r5"
-      description: "1x Top-15 SF WM 2026"
+    # Men, 1x Top-15 Ski Flying WM 2026
+    - criterion_id: "ski_jumping_m_r5"
+      description: "1x Top-15 Ski Flying WM 2026"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r5_c1"
+        - condition_id: "ski_jumping_m_r5_c1"
           description: "1x Top-15 SF WM 2026"
           competition: ["FIS Ski Flying World Championships"]
-          date: ["2026-01-22", "2026-01-25"]
+          date: ["2026-01-22", "2026-01-31"]
           performance:
             metric: rank
             operator: between
@@ -113,25 +125,224 @@ rule_tree:
             max: 15
           count_at_least: 1
 
-    # Route 6: 1x Top-25 Ski Flying WM 2026 AND 1x Top-25 WC 25/26
-    - criterion_id: "ski_jumping_r6"
-      description: "1x Top-25 SF WM 2026 + 1x Top-25 WC 25/26"
+    # Men, Top-25 SF WM 2026 + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_m_r6"
+      description: "Top-25 SF WM 2026 + Top-25 WC 25/26"
+      gender: ["Men"]
       priority: 1
       conditions:
-        - condition_id: "ski_jumping_r6_c1"
+        - condition_id: "ski_jumping_m_r6_c1"
           description: "1x Top-25 SF WM 2026"
           competition: ["FIS Ski Flying World Championships"]
-          date: ["2026-01-22", "2026-01-25"]
+          date: ["2026-01-22", "2026-01-31"]
           performance:
             metric: rank
             operator: between
             min: 1
             max: 25
           count_at_least: 1
-        - condition_id: "ski_jumping_r6_c2"
-          description: "1x Top-25 WC 25/26"
-          competition: ["Viesmann FIS Ski Jumping World Cup"]
+        - condition_id: "ski_jumping_m_r6_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
           date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Men, Top-3 Junior WM 2025 + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_m_r7"
+      description: "Top-3 Junior WM 2025 + Top-25 WC 25/26"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_m_r7_c1"
+          description: "Top-3 Junior WM 2025"
+          competition: ["FIS Nordic Junior World Ski Championships"]
+          date: ["2025-02-01", "2025-02-28"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "ski_jumping_m_r7_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Men, Top-3 Continental Cup 25/26 + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_m_r8"
+      description: "Top-3 Continental Cup 25/26 + Top-25 WC 25/26"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_m_r8_c1"
+          description: "Top-3 Continental Cup 25/26"
+          competition: ["FIS Ski Jumping Continental Cup"]
+          date: ["2025-07-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "ski_jumping_m_r8_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # ---------- WOMEN (selection end 25.01.2026) ----------
+
+    # Women, Top-10 WM 2025 + Top-25 WC/SG
+    - criterion_id: "ski_jumping_w_r1"
+      description: "Top-10 WM 2025 + Top-25 WC/SG"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r1_c1"
+          description: "Top-10 WM 2025"
+          competition: ["FIS Nordic World Ski Championships"]
+          date: ["2025-02-26", "2025-03-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 10
+          count_at_least: 1
+        - condition_id: "ski_jumping_w_r1_c2"
+          description: "Top-25 WC/SG 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+          date: ["2025-07-15", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Women, Top-15 WC24/25 or SG + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_w_r2"
+      description: "Top-15 WC24/25 or SG + Top-25 WC 25/26"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r2_c1"
+          description: "Top-15 WC 24/25 or SG"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup", "FIS Sommer Grand Prix"]
+          date: ["2024-11-15", "2025-11-01"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+        - condition_id: "ski_jumping_w_r2_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Women, 1x Top-15 WC 25/26
+    - criterion_id: "ski_jumping_w_r3"
+      description: "1x Top-15 WC 25/26"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r3_c1"
+          description: "1x Top-15 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+
+    # Women, 2x Top-25 WC 25/26
+    - criterion_id: "ski_jumping_w_r4"
+      description: "2x Top-25 WC 25/26"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r4_c1"
+          description: "2x Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 2
+
+    # Women, Top-3 Junior WM 2025 + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_w_r7"
+      description: "Top-3 Junior WM 2025 + Top-25 WC 25/26"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r7_c1"
+          description: "Top-3 Junior WM 2025"
+          competition: ["FIS Nordic Junior World Ski Championships"]
+          date: ["2025-02-01", "2025-02-28"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "ski_jumping_w_r7_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Women, Top-3 Continental Cup 25/26 + Top-25 WC 25/26
+    - criterion_id: "ski_jumping_w_r8"
+      description: "Top-3 Continental Cup 25/26 + Top-25 WC 25/26"
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "ski_jumping_w_r8_c1"
+          description: "Top-3 Continental Cup 25/26"
+          competition: ["FIS Ski Jumping Continental Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "ski_jumping_w_r8_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["Viesmann FIS Ski Jumping World Cup", "Four Hills Tournament/Viesmann FIS Ski Jumping World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
           performance:
             metric: rank
             operator: between
