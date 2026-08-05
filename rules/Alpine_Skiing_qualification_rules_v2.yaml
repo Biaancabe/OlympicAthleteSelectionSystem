@@ -1,7 +1,13 @@
 Description: "Alpine Skiing Qualification Rules for Olympic Games 2026"
 created at: 2025-12-18
-updated at: 2025-12-22
-version: "1.1"
+updated at: 2026-01-22
+version: "1.2"
+
+# Concept 4.4 (group 1, both genders, identical criteria -> no gender filter):
+#   - 1x Top 7 in the World Cup 2025/26 (any discipline)   -> route 1
+#   - 2x Top 15 in the World Cup 2025/26, IN THE SAME discipline -> route 2
+# The 'same discipline' rule is enforced by splitting route 2 per discipline via
+# the route-level 'discipline' filter (Downhill, Super G, Giant Slalom, Slalom).
 
 rule_tree:
   description: "Qualification Criteria for Alpine Skiing at Olympic Games 2026"
@@ -9,7 +15,7 @@ rule_tree:
   class: "Seniors"
 
   criteria:
-    # Route 1: 1x Top-7 World Cup 2025/2026
+    # Route 1: 1x Top-7 WC 2025/26 (any discipline)
     - criterion_id: "alpine_skiing_r1"
       description: "Top-7 WC 2025/26"
       priority: 1
@@ -25,13 +31,65 @@ rule_tree:
             max: 7
           count_at_least: 1
 
-    # Route 2: 2x Top-15 World Cup 2025/2026
-    - criterion_id: "alpine_skiing_r2"
-      description: "2x Top-15 WC 2025/26"
+    # Route 2 (Downhill): 2x Top-15 WC 2025/26 in the same discipline
+    - criterion_id: "alpine_skiing_r2_downhill"
+      description: "2x Top-15 WC 2025/26 (Downhill)"
+      discipline: ["Downhill"]
       priority: 1
       conditions:
-        - condition_id: "alpine_skiing_r2_c1"
-          description: "Top-15 WC 2025/26"
+        - condition_id: "alpine_skiing_r2_downhill_c1"
+          description: "Top-15 WC 2025/26 (Downhill)"
+          competition: ["Audi FIS Ski World Cup"]
+          date: ["2025-10-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 2
+
+    # Route 2 (Super G): 2x Top-15 WC 2025/26 in the same discipline
+    - criterion_id: "alpine_skiing_r2_super_g"
+      description: "2x Top-15 WC 2025/26 (Super G)"
+      discipline: ["Super G"]
+      priority: 1
+      conditions:
+        - condition_id: "alpine_skiing_r2_super_g_c1"
+          description: "Top-15 WC 2025/26 (Super G)"
+          competition: ["Audi FIS Ski World Cup"]
+          date: ["2025-10-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 2
+
+    # Route 2 (Giant Slalom): 2x Top-15 WC 2025/26 in the same discipline
+    - criterion_id: "alpine_skiing_r2_giant_slalom"
+      description: "2x Top-15 WC 2025/26 (Giant Slalom)"
+      discipline: ["Giant Slalom"]
+      priority: 1
+      conditions:
+        - condition_id: "alpine_skiing_r2_giant_slalom_c1"
+          description: "Top-15 WC 2025/26 (Giant Slalom)"
+          competition: ["Audi FIS Ski World Cup"]
+          date: ["2025-10-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 2
+
+    # Route 2 (Slalom): 2x Top-15 WC 2025/26 in the same discipline
+    - criterion_id: "alpine_skiing_r2_slalom"
+      description: "2x Top-15 WC 2025/26 (Slalom)"
+      discipline: ["Slalom"]
+      priority: 1
+      conditions:
+        - condition_id: "alpine_skiing_r2_slalom_c1"
+          description: "Top-15 WC 2025/26 (Slalom)"
           competition: ["Audi FIS Ski World Cup"]
           date: ["2025-10-01", "2026-01-25"]
           performance:
