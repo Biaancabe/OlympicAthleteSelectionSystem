@@ -1,0 +1,190 @@
+Description: "Nordic Combined Qualification Rules for Olympic Games 2026"
+created at: 2026-01-22
+updated at: 2026-01-22
+version: "1.0"
+
+# Nordic Combined at Milano Cortina 2026 is MEN ONLY -> gender: ["Men"] on every route.
+# Concept 4.4, individual criteria (OR); selection end 25.01.2026.
+# The WM route splits into a World Cup and a Sommer Grand Prix variant, because the
+# confirmation is 'Top 25 WC OR Top 15 Sommer GP' (two different thresholds).
+#
+# WARNING - UNVERIFIED NAMES: there is NO Nordic Combined data in the current export,
+# so these rules could NOT be validated against real results. The World Cup and
+# Continental Cup competition names ('FIS Nordic Combined World Cup' / '... Continental
+# Cup') and the exact date windows are PROVISIONAL, inferred from the naming used by
+# ski jumping and cross-country. Confirm them once Nordic Combined data appears.
+
+rule_tree:
+  description: "Qualification Criteria for Nordic Combined at Olympic Games 2026"
+  sport: "Nordic Combined"
+  class: "Seniors"
+
+  criteria:
+    # WM 2025 Top-10 + Top-25 WC (confirmation)
+    - criterion_id: "nordic_combined_r1_wc"
+      description: "WM 2025 Top-10 + Top-25 WC (confirmation)"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r1_wc_c1"
+          description: "Top-10 WM 2025"
+          competition: ["FIS Nordic World Ski Championships"]
+          date: ["2025-02-26", "2025-03-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 10
+          count_at_least: 1
+        - condition_id: "nordic_combined_r1_wc_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-07-15", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # WM 2025 Top-10 + Top-15 Sommer GP (confirmation)
+    - criterion_id: "nordic_combined_r1_sg"
+      description: "WM 2025 Top-10 + Top-15 Sommer GP (confirmation)"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r1_sg_c1"
+          description: "Top-10 WM 2025"
+          competition: ["FIS Nordic World Ski Championships"]
+          date: ["2025-02-26", "2025-03-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 10
+          count_at_least: 1
+        - condition_id: "nordic_combined_r1_sg_c2"
+          description: "Top-15 Sommer GP"
+          competition: ["FIS Sommer Grand Prix"]
+          date: ["2025-07-15", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+
+    # Top-15 WC/SG (until Nov 2025) + Top-25 WC
+    - criterion_id: "nordic_combined_r2"
+      description: "Top-15 WC/SG (until Nov 2025) + Top-25 WC"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r2_c1"
+          description: "Top-15 WC or SG"
+          competition: ["FIS Nordic Combined World Cup", "FIS Sommer Grand Prix"]
+          date: ["2024-11-01", "2025-11-01"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+        - condition_id: "nordic_combined_r2_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # 1x Top-15 WC 25/26
+    - criterion_id: "nordic_combined_r3"
+      description: "1x Top-15 WC 25/26"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r3_c1"
+          description: "1x Top-15 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+
+    # 2x Top-25 WC 25/26
+    - criterion_id: "nordic_combined_r4"
+      description: "2x Top-25 WC 25/26"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r4_c1"
+          description: "2x Top-25 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 2
+
+    # Top-3 Junior WM 2025 + Top-25 WC
+    - criterion_id: "nordic_combined_r7"
+      description: "Top-3 Junior WM 2025 + Top-25 WC"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r7_c1"
+          description: "Top-3 Junior WM 2025"
+          competition: ["FIS Nordic Junior World Ski Championships"]
+          date: ["2025-02-01", "2025-02-28"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "nordic_combined_r7_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Top-3 Continental Cup 25/26 + Top-25 WC
+    - criterion_id: "nordic_combined_r8"
+      description: "Top-3 Continental Cup 25/26 + Top-25 WC"
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "nordic_combined_r8_c1"
+          description: "Top-3 Continental Cup 25/26"
+          competition: ["FIS Nordic Combined Continental Cup"]
+          date: ["2025-07-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "nordic_combined_r8_c2"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Nordic Combined World Cup"]
+          date: ["2025-11-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
