@@ -1,0 +1,239 @@
+Description: "Speed Skating (Long Track) Qualification Rules for Olympic Games 2026"
+created at: 2026-01-22
+updated at: 2026-01-22
+version: "0.1"
+
+# ============================ SCAFFOLD, NOT READY ============================
+# This file is a STRUCTURAL scaffold only. It shows HOW long track speed skating
+# would be modelled, but it is not usable for real selection yet:
+#
+# 1. TIME THRESHOLDS ARE TBD. Concept 4.4 requires the ISU qualification time per
+#    distance/gender; the ISU has not published them (ISU Comm. No. xx, tbd). Every
+#    distance route uses 'less_or_equal' with value: 0 as a FAIL-CLOSED placeholder:
+#    no real time is <= 0, so nobody qualifies until the true time (in seconds) is
+#    entered. This is deliberate (constitution principle 3): unknown -> fails loudly
+#    by qualifying no one, never silently qualifying everyone.
+#
+# 2. NO DATA. There is no speed skating data in the export, so competition names
+#    ('ISU Speed Skating World Cup'), discipline names ('500m' ...) and the date
+#    window are PROVISIONAL and unverified.
+#
+# 3. MASS START is approximated as Top-20. The concept ('Group A Top 20 OR first
+#    half of Group B Top 10') needs the group structure, which cannot be resolved
+#    without seeing how the data represents A/B groups. Flagged for later.
+#
+# Distances per gender: Men 500/1000/1500/5000/10000 + Mass Start;
+#                       Women 500/1000/1500/3000/5000 + Mass Start.
+# ============================================================================
+
+rule_tree:
+  description: "Qualification Criteria for Speed Skating at Olympic Games 2026"
+  sport: "Speed Skating"
+  class: "Seniors"
+
+  criteria:
+    # 500m Men: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_500m_men"
+      description: "500m Men: ISU qualification time (TBD)"
+      discipline: ["500m"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_500m_men_c1"
+          description: "Time <= ISU limit 500m Men (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 500m Women: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_500m_women"
+      description: "500m Women: ISU qualification time (TBD)"
+      discipline: ["500m"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_500m_women_c1"
+          description: "Time <= ISU limit 500m Women (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 1000m Men: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_1000m_men"
+      description: "1000m Men: ISU qualification time (TBD)"
+      discipline: ["1000m"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_1000m_men_c1"
+          description: "Time <= ISU limit 1000m Men (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 1000m Women: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_1000m_women"
+      description: "1000m Women: ISU qualification time (TBD)"
+      discipline: ["1000m"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_1000m_women_c1"
+          description: "Time <= ISU limit 1000m Women (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 1500m Men: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_1500m_men"
+      description: "1500m Men: ISU qualification time (TBD)"
+      discipline: ["1500m"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_1500m_men_c1"
+          description: "Time <= ISU limit 1500m Men (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 1500m Women: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_1500m_women"
+      description: "1500m Women: ISU qualification time (TBD)"
+      discipline: ["1500m"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_1500m_women_c1"
+          description: "Time <= ISU limit 1500m Women (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 3000m Women: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_3000m_women"
+      description: "3000m Women: ISU qualification time (TBD)"
+      discipline: ["3000m"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_3000m_women_c1"
+          description: "Time <= ISU limit 3000m Women (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 5000m Men: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_5000m_men"
+      description: "5000m Men: ISU qualification time (TBD)"
+      discipline: ["5000m"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_5000m_men_c1"
+          description: "Time <= ISU limit 5000m Men (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 5000m Women: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_5000m_women"
+      description: "5000m Women: ISU qualification time (TBD)"
+      discipline: ["5000m"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_5000m_women_c1"
+          description: "Time <= ISU limit 5000m Women (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # 10000m Men: reach ISU qualification time (TBD)
+    - criterion_id: "speed_skating_10000m_men"
+      description: "10000m Men: ISU qualification time (TBD)"
+      discipline: ["10000m"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_10000m_men_c1"
+          description: "Time <= ISU limit 10000m Men (TBD)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: time
+            operator: less_or_equal
+            value: 0          # TBD: replace with ISU qualification time in seconds; 0 = fails closed
+          count_at_least: 1
+
+    # Mass Start Men: Top-20 (approximation of 'Group A Top 20 / Group B Top 10')
+    - criterion_id: "speed_skating_mass_start_men"
+      description: "Mass Start Men: Top-20 (approx.)"
+      discipline: ["Mass Start"]
+      gender: ["Men"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_mass_start_men_c1"
+          description: "Top-20 Mass Start WC (approx.)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
+
+    # Mass Start Women: Top-20 (approximation of 'Group A Top 20 / Group B Top 10')
+    - criterion_id: "speed_skating_mass_start_women"
+      description: "Mass Start Women: Top-20 (approx.)"
+      discipline: ["Mass Start"]
+      gender: ["Women"]
+      priority: 1
+      conditions:
+        - condition_id: "speed_skating_mass_start_women_c1"
+          description: "Top-20 Mass Start WC (approx.)"
+          competition: ["ISU Speed Skating World Cup"]
+          date: ["2025-01-01", "2026-01-18"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
+          count_at_least: 1
