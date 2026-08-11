@@ -36,22 +36,30 @@ def evaluate_condition(athlete_results, condition, dob=None, aliases=None):
                 "review_flags": [],
             }
 
-    # 1) filter to the condition's competitions and date range
     comps = condition["competition"]
     start, end = condition["date"]
-    comps_lower = [c.lower() for c in comps]
-    # extend the accepted names with any data-side aliases for these rule
-    # names, so a differently spelled name for the SAME competition still
-    # matches. The comparison itself stays exact (see competition_aliases.yaml).
-    accepted = set(comps_lower)
-    if aliases:
-        for name in comps_lower:
-            accepted.update(aliases.get(name, []))
-    mask = (
-            athlete_results["Comp.SetDetail"].str.lower().isin(accepted)
-            & (athlete_results["Date"] >= start)
+
+    # the date window always constrains which results count
+    date_mask = (
+            (athlete_results["Date"] >= start)
             & (athlete_results["Date"] <= end)
     )
+
+    # competition filter: an empty competition list means "any competition"
+    # (e.g. athletics: "any World Ranking Competition" within the window) -> no
+    # name filter, the date window alone decides. A non-empty list filters by
+    # name, extended with data-side aliases for the SAME competition.
+    if comps:
+        comps_lower = [c.lower() for c in comps]
+        accepted = set(comps_lower)
+        if aliases:
+            for name in comps_lower:
+                accepted.update(aliases.get(name, []))
+        comp_mask = athlete_results["Comp.SetDetail"].str.lower().isin(accepted)
+        mask = comp_mask & date_mask
+    else:
+        mask = date_mask
+
     relevant = athlete_results[mask]
 
     # 2) figure out which column and comparison to use

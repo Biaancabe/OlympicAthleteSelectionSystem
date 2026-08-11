@@ -360,3 +360,53 @@ def test_criterion_single_perf_cond_has_no_nearly_met():
     ])
     res = evaluate_criterion(results, single_cond_crit)
     assert res["status"] == "not_met"
+
+
+# --- empty competition list = no competition filter -------------------------
+
+# same rank condition, once with an empty competition list ("any competition"),
+# once with a named list. Date window is identical.
+ANY_COMP = {
+    "condition_id": "any_c1",
+    "description": "Top-3 at any competition",
+    "competition": [],
+    "date": ["2024-01-01", "2024-12-31"],
+    "performance": {"metric": "rank", "operator": "less_or_equal", "value": 3},
+    "count_at_least": 1,
+}
+
+NAMED_COMP = {
+    "condition_id": "named_c1",
+    "description": "Top-3 at Worlds only",
+    "competition": ["Test Worlds"],
+    "date": ["2024-01-01", "2024-12-31"],
+    "performance": {"metric": "rank", "operator": "less_or_equal", "value": 3},
+    "count_at_least": 1,
+}
+
+
+def _two_comps_top3():
+    # two Top-3 results at different competitions, both inside the date window
+    return make_results([
+        {"Comp.SetDetail": "Test Worlds", "Date": "2024-05-01",
+         "Rank_num": 3, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+        {"Comp.SetDetail": "Some Small Meeting", "Date": "2024-05-02",
+         "Rank_num": 2, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+
+
+def test_empty_competition_matches_any():
+    # empty competition list -> no name filter, date window alone decides ->
+    # both Top-3 results count
+    res = evaluate_condition(_two_comps_top3(), ANY_COMP)
+    assert res["status"] == "met"
+    assert len(res["full_hits"]) == 2
+
+
+def test_named_competition_still_excludes_others():
+    # non-empty list -> only the named competition counts; the small meeting
+    # is filtered out even though it is a Top-3 in-window result
+    res = evaluate_condition(_two_comps_top3(), NAMED_COMP)
+    assert res["status"] == "met"
+    assert len(res["full_hits"]) == 1
+    assert res["full_hits"][0]["value"] == 3
