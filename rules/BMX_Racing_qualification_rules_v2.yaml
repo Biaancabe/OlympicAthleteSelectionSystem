@@ -1,0 +1,61 @@
+Description: "BMX Racing Qualification Rules for Olympic Games 2024"
+created at: 2026-08-11
+updated at: 2026-08-11
+
+version: "0.1"
+
+# Summer Games pilot (Paris 2024). Main criteria only (Selektionskonzept 4.4).
+#
+# Category scoping (Elite vs U23) uses the Class column:
+# Elite -> "Seniors", U23 -> "Under 23". Confirmed convention from the Gracenote
+# winter export (Class holds Juniors/Seniors/Under 23). ASSUMPTION to verify once
+# summer data exists: BMX Elite arrives as "Seniors" and BMX U23 as "Under 23".
+#
+# Competition names are placeholders (no summer data yet) -> confirm / map via
+# rules/competition_aliases.yaml.
+
+rule_tree:
+  description: "Qualification Criteria for BMX Racing at Olympic Games 2024"
+  sport: "BMX Racing"
+
+  criteria:
+    # --- MEN: Route 1 (Elite) OR Route 2 (U23), both priority 1 ---
+    - criterion_id: "bmx_men_elite_top8"
+      description: "Top-8 Elite (Men)"
+      priority: 1
+      gender: ["Men"]
+      class: ["Seniors"]
+      conditions:
+      - condition_id: "bmx_men_elite_top8_c1"
+        description: "Top-8 at an Elite selection event"
+        competition: ["UCI BMX Racing World Championships", "UCI BMX Racing World Cup"]
+        date: ["2023-08-01", "2024-05-19"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    - criterion_id: "bmx_men_u23_top3"
+      description: "Top-3 U23 (Men)"
+      priority: 1
+      gender: ["Men"]
+      class: ["Under 23"]
+      conditions:
+      - condition_id: "bmx_men_u23_top3_c1"
+        description: "Top-3 at a U23 selection event"
+        competition: ["UCI BMX Racing World Championships", "UCI BMX Racing World Cup"]
+        date: ["2023-08-01", "2024-05-19"]
+        performance: { metric: rank, operator: less_or_equal, value: 3 }
+        count_at_least: 1
+
+    # --- WOMEN ---
+    - criterion_id: "bmx_women_elite_top12"
+      description: "Top-12 Elite (Women)"
+      priority: 1
+      gender: ["Women"]
+      class: ["Seniors"]
+      conditions:
+      - condition_id: "bmx_women_elite_top12_c1"
+        description: "Top-12 at an Elite selection event"
+        competition: ["UCI BMX Racing World Championships", "UCI BMX Racing World Cup"]
+        date: ["2023-08-01", "2024-05-19"]
+        performance: { metric: rank, operator: less_or_equal, value: 12 }
+        count_at_least: 1
