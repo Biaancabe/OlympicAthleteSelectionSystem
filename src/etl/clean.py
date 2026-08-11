@@ -39,11 +39,32 @@ def clean_result(value):
     if str(value).strip().upper() in status_codes:
         return None, str(value).strip().upper()
 
-    # 3) a real performance value -> numeric result, no special status
+    # 3) normalize separators (thousands, comma decimal)
+    cleaned = str(value).strip()
+    cleaned = cleaned.replace(" ", "").replace("'", "")  # drop thousands separators (space, apostrophe)
+    cleaned = cleaned.replace(",", ".")  # comma decimal -> dot
+
+    # 3a) clock-style times "m:ss.x" or "h:mm:ss.x" -> total seconds.
+    #     e.g. "6:50.3" -> 410.3, "2:08:10" -> 7690.0. A time is only a valid
+    #     result here if every part parses and the seconds/minutes parts are
+    #     within 0-59; otherwise fall through to the plain-number path.
+    if ":" in cleaned:
+        parts = cleaned.split(":")
+        try:
+            nums = [float(p) for p in parts]
+        except (ValueError, TypeError):
+            return None, None
+        # all parts except the last (seconds) must be whole and < 60;
+        # minutes/hours are integers, only the last part carries decimals
+        if len(parts) in (2, 3) and all(n >= 0 for n in nums):
+            total = 0.0
+            for n in nums:
+                total = total * 60 + n
+            return total, None
+        return None, None
+
+    # 3b) a plain numeric performance value
     try:
-        cleaned = str(value).strip()
-        cleaned = cleaned.replace(" ", "").replace("'", "")  # drop thousands separators (space, apostrophe)
-        cleaned = cleaned.replace(",", ".")  # comma decimal -> dot
         return float(cleaned), None
     except (ValueError, TypeError):
         return None, None

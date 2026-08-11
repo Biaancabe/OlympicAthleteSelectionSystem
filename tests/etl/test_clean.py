@@ -154,3 +154,28 @@ def test_exclude_non_sui_mixed():
     kept, excluded = exclude_non_sui(_nat_df(["SUI", "BRA", None, "SUI"]))
     assert len(kept) == 3
     assert excluded["Nationality"].tolist() == ["BRA"]
+
+def test_clean_result_mmss():
+    # rowing / middle-distance clock times -> total seconds
+    assert clean_result("6:50.3") == (410.3, None)
+    assert clean_result("5:34.6") == (334.6, None)
+
+def test_clean_result_hmmss():
+    # marathon-style h:mm:ss -> total seconds
+    assert clean_result("2:08:10") == (7690.0, None)
+
+def test_clean_result_plain_number_unchanged():
+    # plain seconds and points must still work exactly as before
+    assert clean_result("10.12") == (10.12, None)
+    assert clean_result("8460") == (8460.0, None)
+
+def test_clean_result_separators_still_work():
+    # existing thousands / comma-decimal handling must survive
+    assert clean_result("1'234.5") == (1234.5, None)
+    assert clean_result("9,58") == (9.58, None)
+
+def test_clean_result_status_codes_unchanged():
+    assert clean_result("DNF") == (None, "DNF")
+
+def test_clean_result_missing_unchanged():
+    assert clean_result(None) == (None, None)
