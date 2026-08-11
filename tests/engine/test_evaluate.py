@@ -410,3 +410,42 @@ def test_named_competition_still_excludes_others():
     assert res["status"] == "met"
     assert len(res["full_hits"]) == 1
     assert res["full_hits"][0]["value"] == 3
+
+# --- class filter (age category: Elite vs U23) ------------------------------
+
+# a criterion restricted to one age category (Class)
+U23_CRITERION = {
+    "criterion_id": "test_u23",
+    "description": "Top-3 U23",
+    "priority": 1,
+    "class": ["Under 23"],
+    "conditions": [{
+        "condition_id": "test_u23_c1",
+        "description": "Top-3 at any competition",
+        "competition": [],
+        "date": ["2024-01-01", "2024-12-31"],
+        "performance": {"metric": "rank", "operator": "less_or_equal", "value": 3},
+        "count_at_least": 1,
+    }],
+}
+
+
+def test_criterion_ignores_other_class():
+    # a Top-3 result in the Seniors (Elite) category must NOT count for a
+    # U23-restricted criterion
+    results = make_results([
+        {"Comp.SetDetail": "Test Cup", "Date": "2024-05-01", "Class": "Seniors",
+         "Rank_num": 2, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, U23_CRITERION)
+    assert res["status"] == "not_met"
+
+
+def test_criterion_counts_matching_class():
+    # the same Top-3 result, but in the Under 23 category -> counts
+    results = make_results([
+        {"Comp.SetDetail": "Test Cup", "Date": "2024-05-01", "Class": "Under 23",
+         "Rank_num": 2, "Rank_Status": None, "Result_num": None, "Result_Status": None},
+    ])
+    res = evaluate_criterion(results, U23_CRITERION)
+    assert res["status"] == "met"

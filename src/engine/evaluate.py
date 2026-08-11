@@ -127,6 +127,17 @@ def evaluate_criterion(athlete_results, criterion, dob=None, aliases=None):
     else:
         relevant_results = athlete_results
 
+    # a criterion may also be restricted to certain age categories (Class),
+    # e.g. BMX Elite (Seniors) vs U23 (Under 23). Same mechanic as discipline:
+    # present -> filter, absent -> no filter. Applied on top of the discipline
+    # filter, so both narrow together.
+    classes = criterion.get("class")
+    if classes:
+        classes_lower = [c.lower() for c in classes]
+        relevant_results = relevant_results[
+            relevant_results["Class"].str.lower().isin(classes_lower)
+        ]
+
     condition_results = [
         evaluate_condition(relevant_results, cond, dob, aliases)
         for cond in criterion["conditions"]

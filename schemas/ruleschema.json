@@ -37,6 +37,10 @@
                 "type": "array",
                 "items": { "type": "string" }
               },
+              "class": {
+                "type": "array",
+                "items": { "type": "string", "enum": ["Seniors", "Juniors", "Under 23"] }
+              },
               "gender": {
                 "type": "array",
                 "items": { "type": "string" }
