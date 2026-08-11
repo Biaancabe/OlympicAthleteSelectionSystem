@@ -9,11 +9,6 @@ version: "0.1"
 # The World-Ranking invitation path is NOT machine-evaluable from results -> out
 # of scope, document in Chapter 6.
 #
-# OPEN - competition scope: the real criterion is "any World Ranking Competition"
-# (4.3), but the engine filters on a fixed competition list. The list below is a
-# PLACEHOLDER and deliberately INCOMPLETE. Running it as-is under-matches and can
-# produce false not_qualified (Principle 3). Fix: treat empty/omitted competition
-# as "no competition filter" (small, general engine change), then drop the list.
 #
 # Discipline names ("100m", "Decathlon", "Heptathlon") and competition names are
 # placeholders -> confirm against real Gracenote data / map via aliases.
@@ -35,7 +30,7 @@ rule_tree:
       conditions:
       - condition_id: "ath_100m_men_c1"
         description: "<= 10.00s at a World Ranking Competition"
-        competition: ["World Athletics Championships", "Wanda Diamond League"]  # INCOMPLETE placeholder
+        competition: []
         date: ["2023-07-01", "2024-06-30"]
         performance: { metric: time, operator: less_or_equal, value: 10.00 }
         age: { metric: birth_date, operator: on_or_before, value: "2008-12-31" }
@@ -49,7 +44,7 @@ rule_tree:
       conditions:
       - condition_id: "ath_100m_women_c1"
         description: "<= 11.07s at a World Ranking Competition"
-        competition: ["World Athletics Championships", "Wanda Diamond League"]  # INCOMPLETE placeholder
+        competition: []
         date: ["2023-07-01", "2024-06-30"]
         performance: { metric: time, operator: less_or_equal, value: 11.07 }
         age: { metric: birth_date, operator: on_or_before, value: "2008-12-31" }
@@ -64,7 +59,7 @@ rule_tree:
       conditions:
       - condition_id: "ath_decathlon_men_c1"
         description: ">= 8460 points at a World Ranking Competition"
-        competition: ["World Athletics Championships", "Wanda Diamond League"]  # INCOMPLETE placeholder
+        competition: []
         date: ["2022-12-31", "2024-06-30"]
         performance: { metric: points, operator: greater_or_equal, value: 8460 }
         age: { metric: birth_date, operator: on_or_before, value: "2006-12-31" }
@@ -78,7 +73,7 @@ rule_tree:
       conditions:
       - condition_id: "ath_heptathlon_women_c1"
         description: ">= 6480 points at a World Ranking Competition"
-        competition: ["World Athletics Championships", "Wanda Diamond League"]  # INCOMPLETE placeholder
+        competition: []
         date: ["2022-12-31", "2024-06-30"]
         performance: { metric: points, operator: greater_or_equal, value: 6480 }
         age: { metric: birth_date, operator: on_or_before, value: "2006-12-31" }
