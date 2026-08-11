@@ -1,0 +1,196 @@
+Description: "Diving (individual events) Qualification Rules for Olympic Games 2024"
+created at: 2026-08-11
+updated at: 2026-08-11
+
+version: "0.1"
+
+# Summer Games pilot (Paris 2024). INDIVIDUAL events only. Main criteria only
+# (Selektionskonzept 4.4). Gruppe 1 (priority 1) + Gruppe 2 (priority 2).
+# Gruppe 3 ("Potenzial / persoenliche Bestleistungen") is subjective -> out of scope.
+#
+# TEAM_HANDLING: individual events -> default "individual". The synchro events
+# (3m/10m Synchro) are pair events needing team_handling: "team", which is set
+# once per file (rule_tree level) -> they belong in a SEPARATE file. Documented
+# modelling boundary for Chapter 6.
+#
+# SCOPE BOUNDARY - nation-rectified rank (Principle 3): the Doha 2024 criteria use
+# a "nationen- und personenbereinigte" ranking, which is NOT the raw Rank in the
+# data. Encoding it as raw rank would be plausible-but-wrong, so those routes are
+# documented as comments, not active conditions. Only the 2023 routes (raw rank)
+# are evaluated here.
+#
+# PLACEHOLDERS (no summer data yet): competition names and the discipline values
+# "3m Springboard" / "10m Platform" -> confirm against Gracenote / aliases.
+# "1st place" is modelled as rank <= 1 (identical to rank == 1 for ranks).
+
+rule_tree:
+  description: "Qualification Criteria for Diving (individual) at Olympic Games 2024"
+  sport: "Diving"
+  class: "Seniors"
+
+  criteria:
+    # ================= 3m SPRINGBOARD =================
+    # ---- Men ----
+    - criterion_id: "dv_3m_men_g1_worlds_top8"
+      description: "G1 Men 3m: Top-8 at Worlds 2023 (Fukuoka)"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_men_g1_worlds_top8_c1"
+        description: "Top-8 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    - criterion_id: "dv_3m_men_g1_euros_first"
+      description: "G1 Men 3m: 1st at Euros 2023 (Krakow)"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_men_g1_euros_first_c1"
+        description: "1st place at European Championships 2023"
+        competition: ["LEN European Aquatics Championships"]
+        date: ["2023-06-21", "2023-07-02"]
+        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        count_at_least: 1
+
+    # Boundary (NOT active): G1 Men 3m Top-8 nation-rectified at Worlds 2024 (Doha). See header.
+
+    - criterion_id: "dv_3m_men_g2_worlds_9to12"
+      description: "G2 Men 3m: rank 9-12 at Worlds 2023 (Fukuoka)"
+      priority: 2
+      gender: ["Men"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_men_g2_worlds_9to12_c1"
+        description: "Rank 9-12 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: between, min: 9, max: 12 }
+        count_at_least: 1
+
+    # Boundary (NOT active): G2 Men 3m rank 9-12 nation-rectified at Worlds 2024. See header.
+
+    # ---- Women ----
+    - criterion_id: "dv_3m_women_g1_worlds_top8"
+      description: "G1 Women 3m: Top-8 at Worlds 2023 (Fukuoka)"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_women_g1_worlds_top8_c1"
+        description: "Top-8 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    - criterion_id: "dv_3m_women_g1_euros_first"
+      description: "G1 Women 3m: 1st at Euros 2023 (Krakow)"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_women_g1_euros_first_c1"
+        description: "1st place at European Championships 2023"
+        competition: ["LEN European Aquatics Championships"]
+        date: ["2023-06-21", "2023-07-02"]
+        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        count_at_least: 1
+
+    - criterion_id: "dv_3m_women_g2_worlds_9to12"
+      description: "G2 Women 3m: rank 9-12 at Worlds 2023 (Fukuoka)"
+      priority: 2
+      gender: ["Women"]
+      discipline: ["3m Springboard"]
+      conditions:
+      - condition_id: "dv_3m_women_g2_worlds_9to12_c1"
+        description: "Rank 9-12 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: between, min: 9, max: 12 }
+        count_at_least: 1
+
+    # ================= 10m PLATFORM =================
+    # ---- Men ----
+    - criterion_id: "dv_10m_men_g1_worlds_top8"
+      description: "G1 Men 10m: Top-8 at Worlds 2023 (Fukuoka)"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_men_g1_worlds_top8_c1"
+        description: "Top-8 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    - criterion_id: "dv_10m_men_g1_euros_first"
+      description: "G1 Men 10m: 1st at Euros 2023 (Krakow)"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_men_g1_euros_first_c1"
+        description: "1st place at European Championships 2023"
+        competition: ["LEN European Aquatics Championships"]
+        date: ["2023-06-21", "2023-07-02"]
+        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        count_at_least: 1
+
+    - criterion_id: "dv_10m_men_g2_worlds_9to12"
+      description: "G2 Men 10m: rank 9-12 at Worlds 2023 (Fukuoka)"
+      priority: 2
+      gender: ["Men"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_men_g2_worlds_9to12_c1"
+        description: "Rank 9-12 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: between, min: 9, max: 12 }
+        count_at_least: 1
+
+    # ---- Women ----
+    - criterion_id: "dv_10m_women_g1_worlds_top8"
+      description: "G1 Women 10m: Top-8 at Worlds 2023 (Fukuoka)"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_women_g1_worlds_top8_c1"
+        description: "Top-8 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    - criterion_id: "dv_10m_women_g1_euros_first"
+      description: "G1 Women 10m: 1st at Euros 2023 (Krakow)"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_women_g1_euros_first_c1"
+        description: "1st place at European Championships 2023"
+        competition: ["LEN European Aquatics Championships"]
+        date: ["2023-06-21", "2023-07-02"]
+        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        count_at_least: 1
+
+    - criterion_id: "dv_10m_women_g2_worlds_9to12"
+      description: "G2 Women 10m: rank 9-12 at Worlds 2023 (Fukuoka)"
+      priority: 2
+      gender: ["Women"]
+      discipline: ["10m Platform"]
+      conditions:
+      - condition_id: "dv_10m_women_g2_worlds_9to12_c1"
+        description: "Rank 9-12 at World Championships 2023"
+        competition: ["World Aquatics Championships"]
+        date: ["2023-07-14", "2023-07-22"]
+        performance: { metric: rank, operator: between, min: 9, max: 12 }
+        count_at_least: 1

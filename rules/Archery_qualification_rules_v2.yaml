@@ -1,0 +1,190 @@
+Description: "Archery Qualification Rules for Olympic Games 2024"
+created at: 2026-08-11
+updated at: 2026-08-11
+
+version: "0.1"
+
+# Summer Games pilot (Paris 2024). Main criteria only (Selektionskonzept 4.4).
+# Gruppe 1 (priority 1) and Gruppe 2 (priority 2, born 1994 or later). Gruppe 3
+# ("erhebliche Fortschritte") is subjective -> out of scope. The bonus-point
+# system is a Zusatzkriterium -> out of scope.
+#
+# INTERPRETATION to confirm with L. Castella: points threshold is treated as a
+# REQUIRED companion (AND) to the placement, and the two placement options are
+# alternatives (OR, modelled as two routes). The alternative reading (any one of
+# the three alone qualifies) is not used.
+#
+# Placement OR is split into routes: one via Worlds/World Cup, one via European
+# Games / Euros / University Games. Points condition spans all listed events.
+#
+# PLACEHOLDERS (no summer data yet): competition names and the "Recurve"
+# discipline value -> confirm against Gracenote / map via competition_aliases.yaml.
+
+rule_tree:
+  description: "Qualification Criteria for Archery (Recurve) at Olympic Games 2024"
+  sport: "Archery"
+  class: "Seniors"
+
+  criteria:
+    # ===== GRUPPE 1 (priority 1) =====
+    # --- Men: >=660 pts AND (Top-10 Worlds/WC  OR  Top-8 EG/EM/UG) ---
+    - criterion_id: "arc_g1_men_worlds"
+      description: "G1 Men: >=660 pts + Top-10 Worlds/World Cup"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g1_men_worlds_pts"
+        description: ">=660 pts at a listed event"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 660 }
+        count_at_least: 1
+      - condition_id: "arc_g1_men_worlds_rank"
+        description: "Top-10 at Worlds/World Cup"
+        competition: ["World Archery Championships", "Archery World Cup"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 10 }
+        count_at_least: 1
+
+    - criterion_id: "arc_g1_men_continental"
+      description: "G1 Men: >=660 pts + Top-8 EG/EM/UG"
+      priority: 1
+      gender: ["Men"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g1_men_cont_pts"
+        description: ">=660 pts at a listed event"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 660 }
+        count_at_least: 1
+      - condition_id: "arc_g1_men_cont_rank"
+        description: "Top-8 at European Games / Euros / University Games"
+        competition: ["European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    # --- Women: >=640 pts AND (Top-10 Worlds/WC  OR  Top-8 EG/EM/UG) ---
+    - criterion_id: "arc_g1_women_worlds"
+      description: "G1 Women: >=640 pts + Top-10 Worlds/World Cup"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g1_women_worlds_pts"
+        description: ">=640 pts at a listed event"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 640 }
+        count_at_least: 1
+      - condition_id: "arc_g1_women_worlds_rank"
+        description: "Top-10 at Worlds/World Cup"
+        competition: ["World Archery Championships", "Archery World Cup"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 10 }
+        count_at_least: 1
+
+    - criterion_id: "arc_g1_women_continental"
+      description: "G1 Women: >=640 pts + Top-8 EG/EM/UG"
+      priority: 1
+      gender: ["Women"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g1_women_cont_pts"
+        description: ">=640 pts at a listed event"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 640 }
+        count_at_least: 1
+      - condition_id: "arc_g1_women_cont_rank"
+        description: "Top-8 at European Games / Euros / University Games"
+        competition: ["European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        count_at_least: 1
+
+    # ===== GRUPPE 2 (priority 2, born 1994 or later) =====
+    # age gate carried on the points condition of each route
+    # --- Men: >=650 pts AND (Top-20 Worlds/WC  OR  Top-10 EG/EM/UG) ---
+    - criterion_id: "arc_g2_men_worlds"
+      description: "G2 Men: >=650 pts + Top-20 Worlds/World Cup (born >=1994)"
+      priority: 2
+      gender: ["Men"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g2_men_worlds_pts"
+        description: ">=650 pts at a listed event, born 1994 or later"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 650 }
+        age: { metric: birth_date, operator: on_or_after, value: "1994-01-01" }
+        count_at_least: 1
+      - condition_id: "arc_g2_men_worlds_rank"
+        description: "Top-20 at Worlds/World Cup"
+        competition: ["World Archery Championships", "Archery World Cup"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 20 }
+        count_at_least: 1
+
+    - criterion_id: "arc_g2_men_continental"
+      description: "G2 Men: >=650 pts + Top-10 EG/EM/UG (born >=1994)"
+      priority: 2
+      gender: ["Men"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g2_men_cont_pts"
+        description: ">=650 pts at a listed event, born 1994 or later"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 650 }
+        age: { metric: birth_date, operator: on_or_after, value: "1994-01-01" }
+        count_at_least: 1
+      - condition_id: "arc_g2_men_cont_rank"
+        description: "Top-10 at European Games / Euros / University Games"
+        competition: ["European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 10 }
+        count_at_least: 1
+
+    # --- Women: >=630 pts AND (Top-20 Worlds/WC  OR  Top-10 EG/EM/UG) ---
+    - criterion_id: "arc_g2_women_worlds"
+      description: "G2 Women: >=630 pts + Top-20 Worlds/World Cup (born >=1994)"
+      priority: 2
+      gender: ["Women"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g2_women_worlds_pts"
+        description: ">=630 pts at a listed event, born 1994 or later"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 630 }
+        age: { metric: birth_date, operator: on_or_after, value: "1994-01-01" }
+        count_at_least: 1
+      - condition_id: "arc_g2_women_worlds_rank"
+        description: "Top-20 at Worlds/World Cup"
+        competition: ["World Archery Championships", "Archery World Cup"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 20 }
+        count_at_least: 1
+
+    - criterion_id: "arc_g2_women_continental"
+      description: "G2 Women: >=630 pts + Top-10 EG/EM/UG (born >=1994)"
+      priority: 2
+      gender: ["Women"]
+      discipline: ["Recurve"]
+      conditions:
+      - condition_id: "arc_g2_women_cont_pts"
+        description: ">=630 pts at a listed event, born 1994 or later"
+        competition: ["World Archery Championships", "Archery World Cup", "European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: points, operator: greater_or_equal, value: 630 }
+        age: { metric: birth_date, operator: on_or_after, value: "1994-01-01" }
+        count_at_least: 1
+      - condition_id: "arc_g2_women_cont_rank"
+        description: "Top-10 at European Games / Euros / University Games"
+        competition: ["European Games", "European Archery Championships", "World University Games"]
+        date: ["2023-06-23", "2024-06-30"]
+        performance: { metric: rank, operator: less_or_equal, value: 10 }
+        count_at_least: 1
