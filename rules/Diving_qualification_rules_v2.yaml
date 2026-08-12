@@ -41,7 +41,7 @@ rule_tree:
         description: "Top-8 at World Championships 2023"
         competition: ["World Aquatics Championships"]
         date: ["2023-07-14", "2023-07-22"]
-        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        performance: { metric: rank, operator: equal, value: 8 }
         count_at_least: 1
 
     - criterion_id: "dv_3m_men_g1_euros_first"
@@ -54,7 +54,7 @@ rule_tree:
         description: "1st place at European Championships 2023"
         competition: ["LEN European Aquatics Championships"]
         date: ["2023-06-21", "2023-07-02"]
-        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        performance: { metric: rank, operator: equal, value: 1 }
         count_at_least: 1
 
     # Boundary (NOT active): G1 Men 3m Top-8 nation-rectified at Worlds 2024 (Doha). See header.
@@ -85,7 +85,7 @@ rule_tree:
         description: "Top-8 at World Championships 2023"
         competition: ["World Aquatics Championships"]
         date: ["2023-07-14", "2023-07-22"]
-        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        performance: { metric: rank, operator: equal, value: 8 }
         count_at_least: 1
 
     - criterion_id: "dv_3m_women_g1_euros_first"
@@ -98,7 +98,7 @@ rule_tree:
         description: "1st place at European Championships 2023"
         competition: ["LEN European Aquatics Championships"]
         date: ["2023-06-21", "2023-07-02"]
-        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        performance: { metric: rank, operator: equal, value: 1 }
         count_at_least: 1
 
     - criterion_id: "dv_3m_women_g2_worlds_9to12"
@@ -126,7 +126,7 @@ rule_tree:
         description: "Top-8 at World Championships 2023"
         competition: ["World Aquatics Championships"]
         date: ["2023-07-14", "2023-07-22"]
-        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        performance: { metric: rank, operator: equal, value: 8 }
         count_at_least: 1
 
     - criterion_id: "dv_10m_men_g1_euros_first"
@@ -139,7 +139,7 @@ rule_tree:
         description: "1st place at European Championships 2023"
         competition: ["LEN European Aquatics Championships"]
         date: ["2023-06-21", "2023-07-02"]
-        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        performance: { metric: rank, operator: equal, value: 1 }
         count_at_least: 1
 
     - criterion_id: "dv_10m_men_g2_worlds_9to12"
@@ -166,7 +166,7 @@ rule_tree:
         description: "Top-8 at World Championships 2023"
         competition: ["World Aquatics Championships"]
         date: ["2023-07-14", "2023-07-22"]
-        performance: { metric: rank, operator: less_or_equal, value: 8 }
+        performance: { metric: rank, operator: equal, value: 8 }
         count_at_least: 1
 
     - criterion_id: "dv_10m_women_g1_euros_first"
@@ -179,7 +179,7 @@ rule_tree:
         description: "1st place at European Championships 2023"
         competition: ["LEN European Aquatics Championships"]
         date: ["2023-06-21", "2023-07-02"]
-        performance: { metric: rank, operator: less_or_equal, value: 1 }
+        performance: { metric: rank, operator: equal, value: 1 }
         count_at_least: 1
 
     - criterion_id: "dv_10m_women_g2_worlds_9to12"
