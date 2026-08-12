@@ -1,106 +1,312 @@
 Description: "Cross Country Skiing Qualification Rules for Olympic Games 2026"
 created at: 2025-12-16
-updated at: 2025-12-16
-version: 1.0
+updated at: 2026-01-22
+version: "1.1"
 
-# No Class filter at first, because U23 results are included in one of the criterias. 
-# Question for developper: Where to put the class filter in that file? Every route? Every condition?
-# Only one condition has a different class (Route 2 condition 1)
-# U23 competiton is specified in the competiton name.Therefore, I don't think a class filter is needed. But no class filter at the beginning to keep the U23 results in. 
-# Need a discipline filter: only singles disciplines are considered. Teams are formed with athletes that qualified for singles competitons. Duscuss if manually or automatic verification.
+# No class filter at file level, on purpose: the U23 World Championships (route 2)
+# must stay evaluable, so U23 results are not filtered out. The U23 competition is
+# identified by its competition name, not by a class filter.
+#
+# TARGET DISCIPLINE (Zieldisziplin): the concept requires the criteria to be met
+# within one target discipline, Sprint or Distance. Each route is therefore split
+# into a _sprint and a _distance variant via the route-level 'discipline' filter,
+# so both conditions of a route only count results from the same family.
+#   Sprint   : Sprint Classic Style
+#   Distance : 10km Freestyle, 20km Skiathlon, 50km Classic Style
+# Technique note: the only sprint discipline in the data is classic, so the
+# concept rule 'at least one classical result for individual sprint' is satisfied
+# automatically. If a freestyle sprint ever appears, this must be handled explicitly.
+#
+# Only individual (singles) disciplines are considered here. Relay / team entries
+# are excluded; teams are formed from athletes who qualified in singles.
 
 rule_tree:
   description: "Qualification Criteria for Cross Country Skiing at Olympic Games 2026"
-  sport: "Cross Country Skiing"
+  sport: "Cross-Country Skiing"
 
-  # main criterias for group 1 athletes
-  criteria: 
-    # Route 1: 1x Top-3 World Championships 2025 AND 1x Top-30 World Cup 2025/2026
-    - description: "Top-3 WM 2025 + Top-30 WC 2025/26"
+  # All routes are group 1 main criteria (priority 1). Each route exists twice:
+  # once for Sprint, once for Distance (see header note).
+  criteria:
+    # Route 1 (Sprint): Top-3 WM 2025 + Top-30 WC 25/26
+    - criterion_id: "cross_country_skiing_r1_sprint"
+      description: "Top-3 WM 2025 + Top-30 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r1_c1_sprint"
+          description: "Top-3 WM 2025"
+          competition: ["FIS Nordic World Ski Championships"]
+          date: ["2025-02-26", "2025-03-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r1_c2_sprint"
+          description: "Top-30 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 30
+          count_at_least: 1
 
-      - description: "Top-3 WM 2025"
-        competition: ["FIS Nordic World Ski Championships"]
-        date: ["2025-02-26", "2025-03-09"]
-        performance: [1, 3]
-        count_at_least: 1
-
-      - description: "Top-30 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 30]
-        count_at_least: 1
-
-    # Route 2: 1x Top-3 U23 World Championships 2025 AND 1x Top-25 World Cup 2025/2026
-    - description: "Top-3 U23 WM 2025 + Top-25 WC 2025/26"
+    # Route 1 (Distance): Top-3 WM 2025 + Top-30 WC 25/26
+    - criterion_id: "cross_country_skiing_r1_distance"
+      description: "Top-3 WM 2025 + Top-30 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r1_c1_distance"
+          description: "Top-3 WM 2025"
+          competition: ["FIS Nordic World Ski Championships"]
+          date: ["2025-02-26", "2025-03-09"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r1_c2_distance"
+          description: "Top-30 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 30
+          count_at_least: 1
 
-      - description: "Top-3 U23 WM 2025"
-        competition: ["FIS Nordic U23 World Ski Championships"]
-        date: ["2025-02-26", "2025-03-09"]
-        performance: [1, 3]
-        count_at_least: 1
-
-      - description: "Top-25 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 25]
-        count_at_least: 1
-
-    # Route 3: 1x Top-3 World Cup 2024/2025 AND 1x Top-25 World Cup 2025/2026
-    - description: "Top-3 WC 2024/25 + Top-25 WC 2025/26"
+    # Route 2 (Sprint): Top-3 U23 WM 2025 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r2_sprint"
+      description: "Top-3 U23 WM 2025 + Top-25 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r2_c1_sprint"
+          description: "Top-3 U23 WM 2025"
+          competition: ["FIS Nordic U23 World Ski Championships"]
+          date: ["2025-02-01", "2025-02-15"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r2_c2_sprint"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
 
-      - description: "Top-3 WC 2024/25"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2024-11-29", "2025-07-31"]
-        performance: [1, 3]
-        count_at_least: 1
-
-      - description: "Top-25 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 25]
-        count_at_least: 1
-
-    # Route 4: 1x Top-15 World Cup 2025/2026
-    - description: "Top-15 WC 2025/26"
+    # Route 2 (Distance): Top-3 U23 WM 2025 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r2_distance"
+      description: "Top-3 U23 WM 2025 + Top-25 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r2_c1_distance"
+          description: "Top-3 U23 WM 2025"
+          competition: ["FIS Nordic U23 World Ski Championships"]
+          date: ["2025-02-01", "2025-02-15"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r2_c2_distance"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
 
-      - description: "Top-15 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 15]
-        count_at_least: 1
-
-    # Route 5: 2x Top-25 World Cup 2025/2026
-    - description: "2x Top-25 WC 2025/26"
+    # Route 3 (Sprint): Top-3 WC 2024/25 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r3_sprint"
+      description: "Top-3 WC 2024/25 + Top-25 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r3_c1_sprint"
+          description: "Top-3 WC 2024/25"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2024-11-29", "2025-07-31"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r3_c2_sprint"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
 
-      - description: "Top-25 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 25]
-        count_at_least: 2
-
-    # Route 6: 1x Top-3 Continetal Cup 2025/2026 AND 1x Top-25 World Cup 2025/2026
-    - description: "Top-3 CC 2025/26 + Top-25 WC 2025/26"
+    # Route 3 (Distance): Top-3 WC 2024/25 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r3_distance"
+      description: "Top-3 WC 2024/25 + Top-25 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
       priority: 1
-      conditions: 
+      conditions:
+        - condition_id: "cross_country_skiing_r3_c1_distance"
+          description: "Top-3 WC 2024/25"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2024-11-29", "2025-07-31"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r3_c2_distance"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
 
-      - description: "Top-3 CC 2025/26"
-        competition: ["FIS Cross-Country Continental Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 3]
-        count_at_least: 1
+    # Route 4 (Sprint): Top-15 WC 25/26
+    - criterion_id: "cross_country_skiing_r4_sprint"
+      description: "Top-15 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r4_c1_sprint"
+          description: "Top-15 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
 
-      - description: "Top-25 WC 2025/26"
-        competition: ["FIS Cross-Country World Cup"]
-        date: ["2025-08-01", "2026-01-21"]
-        performance: [1, 25]
-        count_at_least: 1
+    # Route 4 (Distance): Top-15 WC 25/26
+    - criterion_id: "cross_country_skiing_r4_distance"
+      description: "Top-15 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r4_c1_distance"
+          description: "Top-15 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 15
+          count_at_least: 1
+
+    # Route 5 (Sprint): 2x Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r5_sprint"
+      description: "2x Top-25 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r5_c1_sprint"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 2
+
+    # Route 5 (Distance): 2x Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r5_distance"
+      description: "2x Top-25 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r5_c1_distance"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 2
+
+    # Route 6 (Sprint): Top-3 CC 2025/26 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r6_sprint"
+      description: "Top-3 CC 2025/26 + Top-25 WC 25/26 (Sprint)"
+      discipline: ["Sprint Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r6_c1_sprint"
+          description: "Top-3 CC 2025/26"
+          competition: ["FIS Cross-Country Continental Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r6_c2_sprint"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1
+
+    # Route 6 (Distance): Top-3 CC 2025/26 + Top-25 WC 25/26
+    - criterion_id: "cross_country_skiing_r6_distance"
+      description: "Top-3 CC 2025/26 + Top-25 WC 25/26 (Distance)"
+      discipline: ["10km Freestyle", "20km Skiathlon", "50km Classic Style"]
+      priority: 1
+      conditions:
+        - condition_id: "cross_country_skiing_r6_c1_distance"
+          description: "Top-3 CC 2025/26"
+          competition: ["FIS Cross-Country Continental Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
+          count_at_least: 1
+        - condition_id: "cross_country_skiing_r6_c2_distance"
+          description: "Top-25 WC 25/26"
+          competition: ["FIS Cross-Country World Cup"]
+          date: ["2025-08-01", "2026-01-25"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 25
+          count_at_least: 1

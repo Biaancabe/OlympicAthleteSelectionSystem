@@ -27,3 +27,6 @@ archive/
 
 # ---- Generated ETL output (regenerated from code, not versioned) ----
 output/
+
+# --- manually generated data from the formula, which will be updated each time ---
+data/manual_entries.csv

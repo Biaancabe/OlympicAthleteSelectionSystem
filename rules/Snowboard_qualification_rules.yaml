@@ -1,17 +1,18 @@
 Description: "Snowboard Qualification Rules for Olympic Games 2026"
 created at: 2025-12-22
 updated at: 2025-12-22
-version: 1.0
+version: "1.0"
 
-# Rules vary for almost every discipline, especially in the priority 2 criterias.
-# Tried to regroup as much as posssible to avoid redundancy, but still quite long.
-# Snowboard Cross and Parallel Giant Slalom have different time windows as the other disciplines (Slopestyle, Big Air, Halfpipe).
-
-# There are Gender specific criterias. It is specified when needed.  
-
-# Some criterias have a list of competitions, to avoid a "or". We can change that if needed. 
-
-# Also to check: where to put the discipline specification in the tree. For now, in the leaf. But could be earlier to avoid redundancy.Same comment for gender. 
+# Structure notes:
+# - discipline and gender are specified on the criterion (route) level.
+# - A list in the "competition" field means OR (any one of the listed competitions counts).
+# - Snowboard Cross and Parallel Giant Slalom have a different World Cup time window
+#   than the park disciplines (Big Air, Halfpipe, Slopestyle).
+#
+# STANDINGS NOTE (Routes 2.1 / 2.2): "World Cup Standings 2024/25" uses the
+# 2024/25 season window (01.07.2024 - 30.06.2025, Gracenote cross-year season),
+# consistent with routes 6.x. In the data the standings fall Feb-Apr 2025.
+# (Previously a 4-day window ["2025-01-03","2025-01-07"] that matched nothing.)
 
 rule_tree:
   description: "Qualification Criteria for Snowboard at Olympic Games 2026"
@@ -19,313 +20,453 @@ rule_tree:
   class: "Seniors"
 
   criteria:
-    # Route 1.1: Top-3 World Championships 2025 AND Top-8 World Cup 2025/2026, Big Air, Halfpipe and Slopestyle
-    - description: "Top-3 WC 2025 AND Top-8 WC 2025/2026"
+    # Route 1.1: Top-3 WM 2025 AND Top-8 WC 25/26 (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r1_1"
+      description: "Top-3 WM 2025 + Top-8 WC 25/26"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       priority: 1
       conditions:
-
-        - description: "Top-3 WC 2025"
+        - condition_id: "snowboard_r1_1_c1"
+          description: "Top-3 WM 2025"
           competition: ["FIS Snowboard World Championships"]
           date: ["2025-03-17", "2025-03-30"]
-          performance: [1, 3]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 1
-
-        - description: "Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r1_1_c2"
+          description: "Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 1.2: Top-3 World Championships 2025 AND Top-8 World Cup 2025/2026, Snowboard Cross and Parallel Giant Slalom
-    - description: "Top-3 WC 2025 AND Top-8 WC 2025/2026"
+    # Route 1.2: Top-3 WM 2025 AND Top-8 WC 25/26 (Snowboard Cross, Parallel Giant Slalom)
+    - criterion_id: "snowboard_r1_2"
+      description: "Top-3 WM 2025 + Top-8 WC 25/26 (SBX, PGS)"
       discipline: ["Snowboard Cross", "Parallel Giant Slalom"]
       priority: 1
       conditions:
-
-        - description: "Top-3 WC 2025"
+        - condition_id: "snowboard_r1_2_c1"
+          description: "Top-3 WM 2025"
           competition: ["FIS Snowboard World Championships"]
           date: ["2025-03-17", "2025-03-30"]
-          performance: [1, 3]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 1
-
-        - description: "Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r1_2_c2"
+          description: "Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 2.1: Top-3 World Cup standings 2024/2025 AND 1x Top-8 World Cup 2025/2026, Big Air, Halfpipe and Slopestyle
-    - description: "Top-3 WC Standings 2024/25 AND 1x Top-8 WC 2025/2026"
+    # Route 2.1: Top-3 WC Standings 24/25 AND 1x Top-8 WC 25/26 (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r2_1"
+      description: "Top-3 WC Standings 24/25 + 1x Top-8 WC 25/26"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       priority: 1
       conditions:
-
-        - description: "Top-3 WC Standings 2024/25"
+        - condition_id: "snowboard_r2_1_c1"
+          description: "Top-3 WC Standings 24/25"
           competition: ["VISA FIS Snowboard World Cup standings"]
-          date: ["2025-01-03", "2025-01-07"]
-          performance: [1, 3]
+          date: ["2024-07-01", "2025-06-30"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 1
-
-        - description: "1x Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r2_1_c2"
+          description: "1x Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 2.1: Top-3 World Cup standings 2024/2025 AND 1x Top-8 World Cup 2025/2026, Snowboard Cross and Parallel Giant Slalom
-    - description: "Top-3 WC Standings 2024/25 AND 1x Top-8 WC 2025/2026"
+    # Route 2.2: Top-3 WC Standings 24/25 AND 1x Top-8 WC 25/26 (Snowboard Cross, Parallel Giant Slalom)
+    - criterion_id: "snowboard_r2_2"
+      description: "Top-3 WC Standings 24/25 + 1x Top-8 WC 25/26 (SBX, PGS)"
       discipline: ["Snowboard Cross", "Parallel Giant Slalom"]
       priority: 1
       conditions:
-
-        - description: "Top-3 WC Standings 2024/25"
+        - condition_id: "snowboard_r2_2_c1"
+          description: "Top-3 WC Standings 24/25"
           competition: ["VISA FIS Snowboard World Cup standings"]
-          date: ["2025-01-03", "2025-01-07"]
-          performance: [1, 3]
+          date: ["2024-07-01", "2025-06-30"]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 1
-
-        - description: "1x Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r2_2_c2"
+          description: "1x Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 3.1: 2x Top-3 World Cup 2025/2026, Big Air, Halfpipe and Slopestyle
-    - description: "2x Top-3 WC 2025/26"
+    # Route 3.1: 2x Top-3 WC 25/26 (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r3_1"
+      description: "2x Top-3 WC 25/26"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       priority: 1
       conditions:
-
-        - description: "2x Top-3 WC 2025/26"
+        - condition_id: "snowboard_r3_1_c1"
+          description: "2x Top-3 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 3]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 2
 
-    # Route 3.2: 2x Top-3 World Cup 2025/2026, Snowboard Cross and Parallel Giant Slalom
-    - description: "2x Top-3 WC 2025/26"
+    # Route 3.2: 2x Top-3 WC 25/26 (Snowboard Cross, Parallel Giant Slalom)
+    - criterion_id: "snowboard_r3_2"
+      description: "2x Top-3 WC 25/26 (SBX, PGS)"
       discipline: ["Snowboard Cross", "Parallel Giant Slalom"]
       priority: 1
       conditions:
-
-        - description: "2x Top-3 WC 2025/26"
+        - condition_id: "snowboard_r3_2_c1"
+          description: "2x Top-3 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 3]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 3
           count_at_least: 2
 
-    # Route 4.1: 1x Top-8 World Cup 2025/2026, Big Air, Halfpipe and Slopestyle
-    - description: "1x Top-8 WC 2025/2026"
+    # Route 4.1: 1x Top-8 WC 25/26 (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r4_1"
+      description: "1x Top-8 WC 25/26"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       priority: 2
       conditions:
-
-        - description: "1x Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r4_1_c1"
+          description: "1x Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 4.2: 1x Top-8 World Cup 2025/2026, Snowboard Cross and Parallel Giant Slalom
-    - description: "1x Top-8 WC 2025/2026"
+    # Route 4.2: 1x Top-8 WC 25/26 (Snowboard Cross, Parallel Giant Slalom)
+    - criterion_id: "snowboard_r4_2"
+      description: "1x Top-8 WC 25/26 (SBX, PGS)"
       discipline: ["Snowboard Cross", "Parallel Giant Slalom"]
       priority: 2
       conditions:
-
-        - description: "1x Top-8 WC 2025/2026"
+        - condition_id: "snowboard_r4_2_c1"
+          description: "1x Top-8 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 8]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 8
           count_at_least: 1
 
-    # Route 5.1: Women, 2x Top-12 World Cup 2025/2026, Big Air, Halfpipe and Slopestyle
-    - description: "2x Top-12 WC 2025/2026"
+    # Route 5.1: Women, 2x Top-12 WC 25/26 (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r5_1"
+      description: "Women, 2x Top-12 WC 25/26"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       gender: ["Women"]
       priority: 2
       conditions:
-
-        - description: "2x Top-12 WC 25/26"
+        - condition_id: "snowboard_r5_1_c1"
+          description: "2x Top-12 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 2
 
-    # Route 5.2: Men, 2x Top-20 World Cup 2025/2026, Big Air and Slopestyle
-    - description: "2x Top-20 WC 2025/2026"
+    # Route 5.2: Men, 2x Top-20 WC 25/26 (Big Air, Slopestyle)
+    - criterion_id: "snowboard_r5_2"
+      description: "Men, 2x Top-20 WC 25/26"
       discipline: ["Big Air", "Slopestyle"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "2x Top-20 WC 25/26"
+        - condition_id: "snowboard_r5_2_c1"
+          description: "2x Top-20 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 2
 
-    # Route 5.3: Men, 2x Top-16 World Cup 2025/2026, Halfpipe 
-    - description: "2x Top-16 WC 2025/2026"
+    # Route 5.3: Men, 2x Top-16 WC 25/26 (Halfpipe)
+    - criterion_id: "snowboard_r5_3"
+      description: "Men, 2x Top-16 WC 25/26"
       discipline: ["Halfpipe"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "2x Top-16 WC 25/26"
+        - condition_id: "snowboard_r5_3_c1"
+          description: "2x Top-16 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 2
 
-    # Route 5.4: 2x Top-16 World Cup 2025/2026, Parallel Giant Slalom (Men and Women)
-    - description: "2x Top-16 WC 2025/2026"
+    # Route 5.4: 2x Top-16 WC 25/26 (Parallel Giant Slalom, Men and Women)
+    - criterion_id: "snowboard_r5_4"
+      description: "2x Top-16 WC 25/26 (PGS)"
       discipline: ["Parallel Giant Slalom"]
       priority: 2
       conditions:
-
-        - description: "2x Top-16 WC 25/26"
+        - condition_id: "snowboard_r5_4_c1"
+          description: "2x Top-16 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 2
 
-    # Route 5.5: 2x Top-12 World Cup 2025/2026, Snowboard Cross (Women)
-    - description: "2x Top-12 WC 2025/2026"
+    # Route 5.5: Women, 2x Top-12 WC 25/26 (Snowboard Cross)
+    - criterion_id: "snowboard_r5_5"
+      description: "Women, 2x Top-12 WC 25/26 (SBX)"
       discipline: ["Snowboard Cross"]
       gender: ["Women"]
       priority: 2
       conditions:
-
-        - description: "2x Top-12 WC 25/26"
+        - condition_id: "snowboard_r5_5_c1"
+          description: "2x Top-12 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 2
 
-    # Route 5.6: 2x Top-20 World Cup 2025/2026, Snowboard Cross (Men)
-    - description: "2x Top-20 WC 2025/2026"
+    # Route 5.6: Men, 2x Top-20 WC 25/26 (Snowboard Cross)
+    - criterion_id: "snowboard_r5_6"
+      description: "Men, 2x Top-20 WC 25/26 (SBX)"
       discipline: ["Snowboard Cross"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "2x Top-20 WC 25/26"
+        - condition_id: "snowboard_r5_6_c1"
+          description: "2x Top-20 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 2
 
-    # Route 6.1: Women, 1x Top-12 World Cup 2025/2026 AND 1x Top-12 World Cup 2024/2025 or 1x Top-12 World Championships 2025, Big Air, Halfpipe and Slopestyle
-    - description: "1x Top-12 WC 25/26 AND 1x Top-12 WC 24/25 or WM 2025"
+    # Route 6.1: Women, 1x Top-12 WC 25/26 AND (1x Top-12 WC 24/25 OR WM 2025) (Big Air, Halfpipe, Slopestyle)
+    - criterion_id: "snowboard_r6_1"
+      description: "Women, 1x Top-12 WC 25/26 + 1x Top-12 WC 24/25 or WM 2025"
       discipline: ["Big Air", "Halfpipe", "Slopestyle"]
       gender: ["Women"]
       priority: 2
       conditions:
-
-        - description: "1x Top-12 WC 25/26"
+        - condition_id: "snowboard_r6_1_c1"
+          description: "1x Top-12 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 1
-
-        - description: "1x Top-12 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_1_c2"
+          description: "1x Top-12 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-07-01", "2025-06-20"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 1
 
-    # Route 6.2: Men, 1x Top-16 World Cup 2025/2026 AND 1x Top-16 World Cup 2024/2025 or 1x Top-16 World Championships 2025, Halfpipe
-    - description: "1x Top-16 WC 25/26 AND 1x Top-16 WC 24/25 or WM 2025"
+    # Route 6.2: Men, 1x Top-16 WC 25/26 AND (1x Top-16 WC 24/25 OR WM 2025) (Halfpipe)
+    - criterion_id: "snowboard_r6_2"
+      description: "Men, 1x Top-16 WC 25/26 + 1x Top-16 WC 24/25 or WM 2025"
       discipline: ["Halfpipe"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "1x Top-16 WC 25/26"
+        - condition_id: "snowboard_r6_2_c1"
+          description: "1x Top-16 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 1
-
-        - description: "1x Top-16 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_2_c2"
+          description: "1x Top-16 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-07-01", "2025-06-20"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 1
 
-    # Route 6.3: Men, 1x Top-20 World Cup 2025/2026 AND 1x Top-20 World Cup 2024/2025 or 1x Top-20 World Championships 2025, Big Air and Slopestyle
-    - description: "1x Top-20 WC 25/26 AND 1x Top-20 WC 24/25 or WM 2025"
+    # Route 6.3: Men, 1x Top-20 WC 25/26 AND (1x Top-20 WC 24/25 OR WM 2025) (Big Air, Slopestyle)
+    - criterion_id: "snowboard_r6_3"
+      description: "Men, 1x Top-20 WC 25/26 + 1x Top-20 WC 24/25 or WM 2025"
       discipline: ["Big Air", "Slopestyle"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "1x Top-20 WC 25/26"
+        - condition_id: "snowboard_r6_3_c1"
+          description: "1x Top-20 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 1
-
-        - description: "1x Top-20 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_3_c2"
+          description: "1x Top-20 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-07-01", "2025-06-20"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 1
 
-    # Route 6.4: 1x Top-16 World Cup 2025/2026 AND 1x Top-16 World Cup 2024/2025 or 1x Top-16 World Championships 2025, Parallel Giant Slalom (Men and Women)
-    - description: "1x Top-16 WC 25/26 AND 1x Top-16 WC 24/25 or WM 2025"
+    # Route 6.4: 1x Top-16 WC 25/26 AND (1x Top-16 WC 24/25 OR WM 2025) (Parallel Giant Slalom, Men and Women)
+    - criterion_id: "snowboard_r6_4"
+      description: "1x Top-16 WC 25/26 + 1x Top-16 WC 24/25 or WM 2025 (PGS)"
       discipline: ["Parallel Giant Slalom"]
       priority: 2
       conditions:
-
-        - description: "1x Top-16 WC 25/26"
+        - condition_id: "snowboard_r6_4_c1"
+          description: "1x Top-16 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-09-01", "2026-01-25"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 1
-
-        - description: "1x Top-16 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_4_c2"
+          description: "1x Top-16 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-09-01", "2025-06-25"]
-          performance: [1, 16]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 16
           count_at_least: 1
 
-    # Route 6.5: Women, 1x Top-12 World Cup 2025/2026 AND 1x Top-12 World Cup 2024/2025 or 1x Top-12 World Championships 2025, Snowboard Cross
-    - description: "1x Top-12 WC 25/26 AND 1x Top-12 WC 24/25 or WM 2025"
+    # Route 6.5: Women, 1x Top-12 WC 25/26 AND (1x Top-12 WC 24/25 OR WM 2025) (Snowboard Cross)
+    - criterion_id: "snowboard_r6_5"
+      description: "Women, 1x Top-12 WC 25/26 + 1x Top-12 WC 24/25 or WM 2025 (SBX)"
       discipline: ["Snowboard Cross"]
       gender: ["Women"]
       priority: 2
       conditions:
-
-        - description: "1x Top-12 WC 25/26"
+        - condition_id: "snowboard_r6_5_c1"
+          description: "1x Top-12 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 1
-
-        - description: "1x Top-12 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_5_c2"
+          description: "1x Top-12 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-07-01", "2025-06-20"]
-          performance: [1, 12]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 12
           count_at_least: 1
 
-    # Route 6.6: Men, 1x Top-20 World Cup 2025/2026 AND 1x Top-20 World Cup 2024/2025 or 1x Top-20 World Championships 2025, Snowboard Cross
-    - description: "1x Top-20 WC 25/26 AND 1x Top-20 WC 24/25 or WM 2025"
+    # Route 6.6: Men, 1x Top-20 WC 25/26 AND (1x Top-20 WC 24/25 OR WM 2025) (Snowboard Cross)
+    - criterion_id: "snowboard_r6_6"
+      description: "Men, 1x Top-20 WC 25/26 + 1x Top-20 WC 24/25 or WM 2025 (SBX)"
       discipline: ["Snowboard Cross"]
       gender: ["Men"]
       priority: 2
       conditions:
-
-        - description: "1x Top-20 WC 25/26"
+        - condition_id: "snowboard_r6_6_c1"
+          description: "1x Top-20 WC 25/26"
           competition: ["VISA FIS Snowboard World Cup"]
           date: ["2025-07-01", "2026-01-20"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 1
-
-        - description: "1x Top-20 WC 24/25 or WM 2025"
+        - condition_id: "snowboard_r6_6_c2"
+          description: "1x Top-20 WC 24/25 or WM 2025"
           competition: ["VISA FIS Snowboard World Cup", "FIS Snowboard World Championships"]
           date: ["2024-07-01", "2025-06-20"]
-          performance: [1, 20]
+          performance:
+            metric: rank
+            operator: between
+            min: 1
+            max: 20
           count_at_least: 1
 
